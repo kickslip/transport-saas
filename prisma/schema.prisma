@@ -1,0 +1,630 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  description       String?
+  logoUrl           String?
+  primaryColor      String   @default("#3b82f6")
+  contactEmail      String
+  contactPhone      String?
+  address           String?
+  isActive          Boolean  @default(true)
+  saasFeePerVehicle Int      @default(800)
+  paymentProvider   String   @default("eft")
+  bankAccountName   String?
+  bankAccountNumber String?
+  bankName          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  users             User[]
+  vehicles          Vehicle[]
+  trips             Trip[]
+  bookings          Booking[]
+  tripSchedules     TripSchedule[]
+  payments          Payment[]
+  paymentPlans      PaymentPlan[]
+  messages          Message[]
+  invoices          Invoice[]
+  tenantBilling     TenantBilling?
+
+  @@map("tenants")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  tenantId      String?
+  tenant        Tenant?   @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  
+  role          UserRole  @default(PASSENGER)
+  email         String    @unique
+  emailVerified DateTime?
+  
+  passwordHash  String?
+  googleId      String?   @unique
+  
+  firstName     String
+  lastName      String
+  phoneNumber   String?
+  idNumber      String?   // For POPIA compliance - optional
+  
+  avatarUrl     String?
+  
+  // Driver specific fields
+  driverLicenseNumber    String?
+  driverLicenseExpiry    DateTime?
+  driverLicenseImageUrl  String?
+  driverStatus           DriverStatus @default(OFFLINE)
+  driverTier             DriverTier   @default(FREE)
+  driverRating           Float        @default(0)
+  driverReviewCount      Int          @default(0)
+  currentLocationLat     Float?
+  currentLocationLng     Float?
+  lastLocationUpdate     DateTime?
+  
+  // Passenger specific
+  passengerRating        Float?   @default(0)
+  passengerReviewCount   Int      @default(0)
+  
+  // Wallet for prepaid commuters
+  walletBalance          Int      @default(0) // in cents
+  
+  isActive               Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  // Relations
+  driverTrips            Trip[]        @relation("DriverTrips")
+  passengerBookings      Booking[]     @relation("PassengerBookings")
+  driverBookings         Booking[]     @relation("DriverBookings")
+  sentMessages           Message[]     @relation("SentMessages")
+  receivedMessages       Message[]     @relation("ReceivedMessages")
+  payments               Payment[]
+  paymentPlans           PaymentPlan[]
+  tripLocations          TripLocation[]
+  driverReviewsReceived  Review[]      @relation("ReviewedDriver")
+  passengerReviewsGiven  Review[]      @relation("ReviewingPassenger")
+  passengerReviewsReceived Review[]    @relation("ReviewedPassenger")
+  auditLogs              AuditLog[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id              String   @id @default(cuid())
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  registrationNumber String @unique
+  make            String
+  model           String
+  year            Int
+  color           String
+  capacity        Int      @default(4)
+  
+  vehicleType     VehicleType @default(SEDAN)
+  
+  licenseDiscUrl  String?
+  insuranceUrl    String?
+  
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  trips           Trip[]
+
+  @@map("vehicles")
+}
+
+model Trip {
+  id              String    @id @default(cuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  tripType        TripType
+  
+  // Driver assignment
+  driverId        String
+  driver          User      @relation("DriverTrips", fields: [driverId], references: [id], onDelete: Cascade)
+  
+  vehicleId       String?
+  vehicle         Vehicle?  @relation(fields: [vehicleId], references: [id])
+  
+  // For scheduled trips
+  tripScheduleId  String?
+  tripSchedule    TripSchedule? @relation(fields: [tripScheduleId], references: [id])
+  
+  // Route details
+  startLocationName   String
+  startLocationLat    Float
+  startLocationLng    Float
+  endLocationName     String
+  endLocationLat      Float
+  endLocationLng      Float
+  
+  // Pricing
+  basePrice       Int           // in cents
+  platformFee     Int           @default(0) // in cents
+  totalPrice      Int           // in cents
+  
+  // Schedule
+  scheduledStartTime  DateTime
+  estimatedEndTime    DateTime?
+  actualStartTime     DateTime?
+  actualEndTime       DateTime?
+  
+  // Status
+  status          TripStatus    @default(SCHEDULED)
+  cancellationReason String?
+  
+  // Additional details
+  notes           String?
+  availableSeats  Int?
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  bookings        Booking[]
+  locations       TripLocation[]
+  messages        Message[]
+  payments        Payment[]
+
+  @@map("trips")
+}
+
+model TripSchedule {
+  id              String    @id @default(cuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  driverId        String
+  
+  name            String    // e.g., "Morning Commuter - Sandton to CBD"
+  description     String?
+  
+  // Route
+  startLocationName   String
+  startLocationLat    Float
+  startLocationLng    Float
+  endLocationName     String
+  endLocationLat      Float
+  endLocationLng      Float
+  
+  // Pricing
+  basePrice       Int
+  
+  // Recurrence pattern
+  recurrenceType  RecurrenceType
+  daysOfWeek      Int[]     // [1,2,3,4,5] for Mon-Fri
+  startTime       String    // "08:00"
+  effectiveFrom   DateTime
+  effectiveUntil  DateTime?
+  
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  trips           Trip[]
+
+  @@map("trip_schedules")
+}
+
+model Booking {
+  id              String    @id @default(cuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  tripId          String
+  trip            Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  
+  passengerId     String
+  passenger       User      @relation("PassengerBookings", fields: [passengerId], references: [id], onDelete: Cascade)
+  
+  // For recurring bookings (parent booking reference)
+  parentBookingId String?
+  parentBooking   Booking?  @relation("RecurringBookings", fields: [parentBookingId], references: [id])
+  childBookings   Booking[] @relation("RecurringBookings")
+  
+  // Pickup details (can differ from trip start)
+  pickupLocationName  String?
+  pickupLocationLat   Float?
+  pickupLocationLng   Float?
+  
+  seatsBooked     Int       @default(1)
+  
+  // Payment
+  basePrice       Int
+  platformFee     Int       @default(0)
+  totalPrice      Int
+  
+  // Status
+  status          BookingStatus @default(PENDING)
+  
+  // Attendance (for scheduled trips)
+  attended        Boolean?
+  attendanceMarkedAt DateTime?
+  attendanceMarkedBy String?   // driver or system
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  payments        Payment[]
+  reviews         Review[]
+
+  @@map("bookings")
+}
+
+model TripLocation {
+  id          String   @id @default(cuid())
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  
+  driverId    String
+  driver      User     @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  
+  latitude    Float
+  longitude   Float
+  accuracy    Float?   // GPS accuracy in meters
+  speed       Float?   // km/h
+  timestamp   DateTime @default(now())
+
+  @@index([tripId, timestamp])
+  @@map("trip_locations")
+}
+
+model Payment {
+  id              String    @id @default(cuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  tripId          String?
+  trip            Trip?     @relation(fields: [tripId], references: [id])
+  
+  bookingId       String?
+  booking         Booking?  @relation(fields: [bookingId], references: [id])
+  
+  paymentPlanId   String?
+  paymentPlan     PaymentPlan? @relation(fields: [paymentPlanId], references: [id])
+  
+  // Payment details
+  amount          Int       // in cents
+  platformFee     Int       @default(0)
+  
+  method          PaymentMethod
+  status          PaymentStatus @default(PENDING)
+  
+  // For EFT - proof of payment
+  proofOfPaymentUrl   String?
+  verifiedBy      String?   // admin user who verified
+  verifiedAt      DateTime?
+  
+  // For cash
+  collectedByDriverId String?
+  
+  // Reference numbers
+  reference       String?   @unique
+  externalReference String? // bank reference, etc.
+  
+  notes           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("payments")
+}
+
+model PaymentPlan {
+  id              String    @id @default(cuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name            String    // e.g., "Monthly Commuter Pass"
+  description     String?
+  
+  planType        PlanType
+  frequency       PaymentFrequency
+  
+  amountPerPeriod Int       // in cents
+  totalAmount     Int?      // for installments - total to pay
+  installmentCount Int?     // number of payments for installment plans
+  
+  startDate       DateTime
+  endDate         DateTime?
+  
+  // Related trip schedule for commuter plans
+  tripScheduleId  String?
+  
+  status          PlanStatus @default(ACTIVE)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  payments        Payment[]
+  bookings        Booking[] // Track bookings covered by this plan
+
+  @@map("payment_plans")
+}
+
+model Message {
+  id              String   @id @default(cuid())
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  tripId          String?
+  trip            Trip?    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  
+  senderId        String
+  sender          User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  
+  receiverId      String
+  receiver        User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  content         String
+  isRead          Boolean  @default(false)
+  readAt          DateTime?
+  
+  createdAt       DateTime @default(now())
+
+  @@index([tripId, createdAt])
+  @@index([senderId, receiverId, createdAt])
+  @@map("messages")
+}
+
+model Review {
+  id              String   @id @default(cuid())
+  
+  bookingId       String   @unique
+  booking         Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  
+  // Who is reviewing
+  reviewerId      String
+  
+  // Who is being reviewed
+  driverId        String?
+  driver          User?    @relation("ReviewedDriver", fields: [driverId], references: [id], onDelete: SetNull)
+  
+  passengerId     String?
+  passenger       User?    @relation("ReviewedPassenger", fields: [passengerId], references: [id], onDelete: SetNull)
+  
+  // Review details
+  rating          Int      // 1-5
+  comment         String?
+  
+  // Categories
+  punctuality     Int?     // 1-5
+  cleanliness     Int?     // 1-5
+  drivingSkill    Int?     // 1-5
+  communication   Int?     // 1-5
+  
+  isVisible       Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  invoiceNumber   String   @unique
+  
+  periodStart     DateTime
+  periodEnd       DateTime
+  
+  vehicleCount    Int
+  saasFeePerVehicle Int
+  subtotal        Int      // in cents
+  
+  // Additional charges
+  additionalCharges Int   @default(0)
+  additionalChargesDescription String?
+  
+  discount        Int      @default(0)
+  discountReason  String?
+  
+  totalAmount     Int
+  
+  status          InvoiceStatus @default(DRAFT)
+  
+  paidAt          DateTime?
+  paidAmount      Int?
+  paymentMethod   PaymentMethod?
+  paymentReference String?
+  
+  dueDate         DateTime
+  sentAt          DateTime?
+  
+  notes           String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("invoices")
+}
+
+model TenantBilling {
+  id              String   @id @default(cuid())
+  tenantId        String   @unique
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  billingCycle    BillingCycle @default(MONTHLY)
+  billingDay      Int      @default(1) // day of month for billing
+  
+  paymentMethod   PaymentMethod @default(EFT)
+  
+  autoInvoice     Boolean  @default(true)
+  autoRemind      Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("tenant_billing")
+}
+
+model AuditLog {
+  id              String   @id @default(cuid())
+  
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  tenantId        String?
+  
+  action          String   // e.g., "USER_LOGIN", "TRIP_CREATED", "PAYMENT_VERIFIED"
+  entityType      String?  // e.g., "User", "Trip", "Payment"
+  entityId        String?
+  
+  oldValues       String?  // JSON string
+  newValues       String?  // JSON string
+  
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([tenantId, createdAt])
+  @@index([action, createdAt])
+  @@map("audit_logs")
+}
+
+// Enums
+enum UserRole {
+  ADMIN
+  DRIVER
+  PASSENGER
+}
+
+enum DriverStatus {
+  ONLINE
+  OFFLINE
+  ON_TRIP
+  BUSY
+}
+
+enum DriverTier {
+  FREE
+  VERIFIED
+  PREMIUM
+}
+
+enum VehicleType {
+  SEDAN
+  SUV
+  VAN
+  MINIBUS
+  BUS
+  BIKE
+}
+
+enum TripType {
+  ON_DEMAND
+  SCHEDULED
+}
+
+enum TripStatus {
+  SCHEDULED
+  DRIVER_ASSIGNED
+  DRIVER_EN_ROUTE
+  DRIVER_ARRIVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum RecurrenceType {
+  DAILY
+  WEEKLY
+  WEEKDAYS
+  WEEKENDS
+  CUSTOM
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  DRIVER_ASSIGNED
+  DRIVER_EN_ROUTE
+  DRIVER_ARRIVED
+  IN_PROGRESS
+  COMPLETED
+  NO_SHOW
+  CANCELLED_BY_PASSENGER
+  CANCELLED_BY_DRIVER
+}
+
+enum PaymentMethod {
+  CASH
+  EFT
+  CARD
+  WALLET
+  FREE
+}
+
+enum PaymentStatus {
+  PENDING
+  VERIFYING
+  COMPLETED
+  FAILED
+  REFUNDED
+  PARTIAL_REFUND
+}
+
+enum PlanType {
+  PER_TRIP
+  COMMUTER_PASS
+  INSTALLMENT
+  PREPAID_WALLET
+}
+
+enum PaymentFrequency {
+  ONE_TIME
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+}
+
+enum PlanStatus {
+  ACTIVE
+  PAUSED
+  EXPIRED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum BillingCycle {
+  MONTHLY
+  QUARTERLY
+  ANNUAL
+}
