@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Tenant {
@@ -96,6 +96,7 @@ model User {
   passengerReviewsGiven  Review[]      @relation("ReviewingPassenger")
   passengerReviewsReceived Review[]    @relation("ReviewedPassenger")
   auditLogs              AuditLog[]
+  pushSubscriptions      PushSubscription[]
 
   @@map("users")
 }
@@ -232,6 +233,9 @@ model Booking {
   
   passengerId     String
   passenger       User      @relation("PassengerBookings", fields: [passengerId], references: [id], onDelete: Cascade)
+
+  driverId        String?
+  driver          User?     @relation("DriverBookings", fields: [driverId], references: [id], onDelete: SetNull)
   
   // For recurring bookings (parent booking reference)
   parentBookingId String?
@@ -260,6 +264,9 @@ model Booking {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  paymentPlanId   String?
+  paymentPlan     PaymentPlan? @relation(fields: [paymentPlanId], references: [id])
 
   // Relations
   payments        Payment[]
@@ -361,7 +368,7 @@ model PaymentPlan {
 
   // Relations
   payments        Payment[]
-  bookings        Booking[] // Track bookings covered by this plan
+  bookings        Booking[]
 
   @@map("payment_plans")
 }
@@ -399,6 +406,7 @@ model Review {
   
   // Who is reviewing
   reviewerId      String
+  reviewer        User     @relation("ReviewingPassenger", fields: [reviewerId], references: [id], onDelete: Cascade)
   
   // Who is being reviewed
   driverId        String?
@@ -509,6 +517,18 @@ model AuditLog {
   @@index([tenantId, createdAt])
   @@index([action, createdAt])
   @@map("audit_logs")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  @@map("push_subscriptions")
 }
 
 // Enums

@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import NotificationBell from '@/components/shared/NotificationBell'
 
 const navigation = [
   { name: 'Dashboard', href: '/passenger', icon: '📊' },
   { name: 'Book a Trip', href: '/passenger/book', icon: '🚗' },
   { name: 'My Trips', href: '/passenger/trips', icon: '📍' },
-  { name: 'Subscriptions', href: '/passenger/subscriptions', icon: '📅' },
+  { name: 'Calendar', href: '/passenger/calendar', icon: '📅' },
+  { name: 'Subscriptions', href: '/passenger/subscriptions', icon: '�' },
   { name: 'Wallet', href: '/passenger/wallet', icon: '💰' },
   { name: 'Messages', href: '/passenger/messages', icon: '💬' },
   { name: 'Profile', href: '/passenger/profile', icon: '👤' },
@@ -40,7 +42,11 @@ export function PassengerSidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-0 w-64 p-4 border-t">
+      <div className="absolute bottom-0 w-64 p-4 border-t space-y-2">
+        <div className="flex items-center justify-between px-2">
+          <span className="text-xs text-gray-400">Notifications</span>
+          <NotificationBell />
+        </div>
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
           className="sidebar-link-inactive w-full"

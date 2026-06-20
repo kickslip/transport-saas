@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { registerUser } from '@/app/actions/auth'
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const defaultRole = searchParams.get('role') || 'passenger'
@@ -41,11 +41,12 @@ export default function RegisterPage() {
         email: formData.email,
         phoneNumber: formData.phoneNumber,
         password: formData.password,
-        role: formData.role.toUpperCase(),
+        role: formData.role.toUpperCase() as 'ADMIN' | 'DRIVER' | 'PASSENGER',
       })
 
       if (result.success) {
-        router.push('/auth/signin?registered=true')
+        const dest = formData.role === 'driver' ? '/driver' : '/passenger'
+        router.push(`/auth/signin?registered=true&callbackUrl=${dest}`)
       } else {
         setError(result.error || 'Registration failed')
       }
@@ -212,5 +213,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-gray-400">Loading...</div></div>}>
+      <RegisterForm />
+    </Suspense>
   )
 }

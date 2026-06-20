@@ -1,14 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { useState, Suspense } from 'react'
+import { signIn, getSession } from 'next-auth/react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const callbackUrl = searchParams.get('callbackUrl') ?? undefined
+  const registered = searchParams.get('registered') === 'true'
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,7 +32,15 @@ export default function SignInPage() {
       if (result?.error) {
         setError('Invalid email or password')
       } else {
-        router.push(callbackUrl)
+        if (callbackUrl) {
+          router.push(callbackUrl)
+        } else {
+          const session = await getSession()
+          const role = (session?.user as any)?.role
+          if (role === 'DRIVER') router.push('/driver')
+          else if (role === 'ADMIN') router.push('/admin')
+          else router.push('/passenger')
+        }
         router.refresh()
       }
     } catch {
@@ -42,7 +51,7 @@ export default function SignInPage() {
   }
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl })
+    signIn('google', { callbackUrl: callbackUrl ?? '/' })
   }
 
   return (
@@ -59,6 +68,12 @@ export default function SignInPage() {
             </Link>
           </p>
         </div>
+
+        {registered && (
+          <div className="rounded-md bg-green-50 p-4">
+            <p className="text-sm text-green-700">Account created! Please sign in.</p>
+          </div>
+        )}
 
         {error && (
           <div className="rounded-md bg-red-50 p-4">
@@ -158,5 +173,13 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-gray-400">Loading...</div></div>}>
+      <SignInForm />
+    </Suspense>
   )
 }

@@ -1,0 +1,28 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "prisma generate && next build",
+  "installCommand": "npm install",
+  "regions": ["fra1"],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "NEXTAUTH_SECRET": "@nextauth_secret",
+    "NEXTAUTH_URL": "@nextauth_url",
+    "DEFAULT_TENANT_SAAS_FEE": "20000",
+    "CRON_SECRET": "@cron_secret"
+  },
+  "crons": [
+    {
+      "path": "/api/cron/invoices",
+      "schedule": "0 6 1 * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/socket",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST" }
+      ]
+    }
+  ]
+}

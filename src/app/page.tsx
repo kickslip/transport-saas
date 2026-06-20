@@ -2,61 +2,79 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-primary-600">TransportSaaS</span>
-            </div>
-            <div className="flex space-x-4">
-              <Link
-                href="/auth/signin"
-                className="btn-secondary"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/register"
-                className="btn-primary"
-              >
-                Get Started
-              </Link>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section with background image */}
+      <div
+        className="relative min-h-screen flex flex-col"
+        style={{
+          backgroundImage: "url('/hero-bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-blue-950/75" />
+
+        {/* Header */}
+        <header className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16 items-center">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold text-white drop-shadow">TransportSaaS</span>
+              </div>
+              <div className="flex space-x-4">
+                <Link
+                  href="/auth/signin"
+                  className="px-4 py-2 rounded-lg border border-white text-white font-medium hover:bg-white hover:text-blue-800 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="px-4 py-2 rounded-lg bg-yellow-400 text-gray-900 font-semibold hover:bg-yellow-300 transition-colors"
+                >
+                  Get Started
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight">
-            Transport Management
-            <span className="block text-primary-600">Made Simple</span>
-          </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
-            Multi-tenant platform for ride-hailing and scheduled transport. 
-            Connect passengers with drivers, manage fleets, and handle payments—all in one place.
-          </p>
-          <div className="mt-10 flex justify-center gap-4">
-            <Link
-              href="/auth/register?role=passenger"
-              className="btn-primary px-8 py-3 text-lg"
-            >
-              I'm a Passenger
-            </Link>
-            <Link
-              href="/auth/register?role=driver"
-              className="btn-secondary px-8 py-3 text-lg"
-            >
-              I'm a Driver
-            </Link>
+        {/* Hero Content */}
+        <main className="relative z-10 flex-1 flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight" style={{textShadow:'0 2px 16px rgba(0,0,0,0.8)'}}>
+                Transport Management
+                <span className="block text-yellow-400">Made Simple</span>
+              </h1>
+              <p className="mt-6 max-w-2xl mx-auto text-xl text-white font-medium" style={{textShadow:'0 1px 8px rgba(0,0,0,0.7)'}}>
+                Multi-tenant platform for ride-hailing and scheduled transport.
+                Connect passengers with drivers, manage fleets, and handle payments—all in one place.
+              </p>
+              <div className="mt-10 flex justify-center gap-4 flex-wrap">
+                <Link
+                  href="/auth/register?role=passenger"
+                  className="px-8 py-3 text-lg rounded-lg bg-yellow-400 text-gray-900 font-semibold hover:bg-yellow-300 transition-colors shadow-lg"
+                >
+                  I'm a Passenger
+                </Link>
+                <Link
+                  href="/auth/register?role=driver"
+                  className="px-8 py-3 text-lg rounded-lg border-2 border-white text-white font-semibold hover:bg-white hover:text-blue-900 transition-colors shadow-lg"
+                >
+                  I'm a Driver
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
+        </main>
+      </div>
 
-        {/* Features */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Features */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="card">
             <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,10 +105,10 @@ export default function HomePage() {
             <p className="text-gray-600">Transport companies manage vehicles, drivers, and schedules with powerful dashboards.</p>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-white mt-20 border-t">
+      <footer className="bg-gray-50 border-t">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-500 text-sm">
             <p>&copy; {new Date().getFullYear()} TransportSaaS. All rights reserved.</p>

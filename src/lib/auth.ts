@@ -1,7 +1,7 @@
-import { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import Google from 'next-auth/providers/google'
+import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './db'
 import { z } from 'zod'
@@ -12,14 +12,14 @@ const credentialsSchema = z.object({
   tenantId: z.string().optional(),
 })
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
+    Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    CredentialsProvider({
+    Credentials({
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
@@ -29,30 +29,19 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         try {
           const parsed = credentialsSchema.parse(credentials)
-          
+
           const user = await prisma.user.findUnique({
             where: { email: parsed.email },
             include: { tenant: true },
           })
 
-          if (!user || !user.passwordHash) {
-            return null
-          }
-
-          if (!user.isActive) {
-            return null
-          }
+          if (!user || !user.passwordHash) return null
+          if (!user.isActive) return null
 
           const isValid = await bcrypt.compare(parsed.password, user.passwordHash)
-          
-          if (!isValid) {
-            return null
-          }
+          if (!isValid) return null
 
-          // Check tenant match if specified
-          if (parsed.tenantId && user.tenantId !== parsed.tenantId) {
-            return null
-          }
+          if (parsed.tenantId && user.tenantId !== parsed.tenantId) return null
 
           return {
             id: user.id,
@@ -79,32 +68,30 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
-        token.role = user.role
-        token.tenantId = user.tenantId
+        token.role = (user as any).role
+        token.tenantId = (user as any).tenantId
       }
-      
-      // Handle Google OAuth sign up
+
       if (account?.provider === 'google' && token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
         })
-        
         if (dbUser) {
           token.id = dbUser.id
           token.role = dbUser.role
           token.tenantId = dbUser.tenantId
         }
       }
-      
+
       return token
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id as string
-        session.user.role = token.role as string
-        session.user.tenantId = token.tenantId as string | null
+        ;(session.user as any).role = token.role
+        ;(session.user as any).tenantId = token.tenantId
       }
       return session
     },
   },
-}
+})

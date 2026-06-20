@@ -1,159 +1,108 @@
-'use client'
+import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/db'
+import Link from 'next/link'
+import DriverLivePanel from '@/components/driver/DriverLivePanel'
 
-import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { io, Socket } from 'socket.io-client'
+export default async function DriverDashboardPage() {
+  const session = await auth()
+  const userId = session?.user?.id
 
-export default function DriverDashboardPage() {
-  const { data: session } = useSession()
-  const [socket, setSocket] = useState<Socket | null>(null)
-  const [isOnline, setIsOnline] = useState(false)
-  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null)
-
-  useEffect(() => {
-    // Initialize Socket.io connection
-    const newSocket = io('/', {
-      path: '/api/socket',
-    })
-
-    newSocket.on('connect', () => {
-      console.log('Connected to socket server')
-    })
-
-    newSocket.on('new-trip-request', (data) => {
-      console.log('New trip request:', data)
-      // Show notification to driver
-      alert(`New trip request! From: ${data.pickup.name} To: ${data.dropoff.name}`)
-    })
-
-    setSocket(newSocket)
-
-    return () => {
-      newSocket.close()
-    }
-  }, [])
-
-  // Update driver location periodically when online
-  useEffect(() => {
-    if (!isOnline || !socket) return
-
-    const updateLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords
-            setLocation({ lat: latitude, lng: longitude })
-            
-            socket.emit('driver-location', {
-              driverId: session?.user?.id,
-              latitude,
-              longitude,
-              accuracy: position.coords.accuracy,
-              speed: position.coords.speed,
-            })
+  const [user, completedToday, totalTrips, upcomingScheduled] = await Promise.all([
+    userId
+      ? prisma.user.findUnique({ where: { id: userId }, select: { firstName: true, driverStatus: true } })
+      : null,
+    userId
+      ? prisma.trip.count({
+          where: {
+            driverId: userId,
+            status: 'COMPLETED',
+            actualEndTime: { gte: new Date(new Date().setHours(0, 0, 0, 0)) },
           },
-          (error) => {
-            console.error('Geolocation error:', error)
-          }
-        )
-      }
-    }
-
-    // Update location every 10 seconds
-    const interval = setInterval(updateLocation, 10000)
-    updateLocation() // Initial update
-
-    return () => clearInterval(interval)
-  }, [isOnline, socket, session])
-
-  const toggleOnlineStatus = () => {
-    const newStatus = !isOnline
-    setIsOnline(newStatus)
-    
-    if (socket) {
-      socket.emit('driver-status', {
-        driverId: session?.user?.id,
-        status: newStatus ? 'ONLINE' : 'OFFLINE',
-      })
-    }
-  }
+        }).catch(() => 0)
+      : 0,
+    userId
+      ? prisma.trip.count({ where: { driverId: userId, status: 'COMPLETED' } }).catch(() => 0)
+      : 0,
+    userId
+      ? prisma.trip.findMany({
+          where: {
+            driverId: userId,
+            status: 'SCHEDULED',
+            scheduledStartTime: { gte: new Date() },
+          },
+          orderBy: { scheduledStartTime: 'asc' },
+          take: 3,
+          include: { bookings: { select: { id: true } } },
+        }).catch(() => [])
+      : [],
+  ])
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Driver Dashboard</h1>
-        <button
-          onClick={toggleOnlineStatus}
-          className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-            isOnline
-              ? 'bg-green-600 text-white hover:bg-green-700'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          {isOnline ? '🟢 Online - Accepting Trips' : '⚪ Go Online'}
-        </button>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Welcome back, {user?.firstName ?? 'Driver'} 👋
+        </h1>
       </div>
 
-      {location && (
-        <div className="card bg-blue-50 border border-blue-200">
-          <p className="text-blue-800">
-            <span className="font-semibold">Current Location:</span>{' '}
-            {location.lat.toFixed(6)}, {location.lng.toFixed(6)}
-          </p>
-        </div>
+      {/* Live Status Panel */}
+      {userId && (
+        <DriverLivePanel
+          driverId={userId}
+          initialStatus={user?.driverStatus ?? 'OFFLINE'}
+        />
       )}
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="card">
-          <p className="text-sm text-gray-500">Today's Earnings</p>
-          <p className="text-2xl font-bold text-green-600">R0.00</p>
+          <p className="text-sm text-gray-500">Trips Today</p>
+          <p className="text-2xl font-bold text-green-600">{completedToday}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Trips Completed</p>
-          <p className="text-2xl font-bold text-primary-600">0</p>
+          <p className="text-sm text-gray-500">Total Completed</p>
+          <p className="text-2xl font-bold text-primary-600">{totalTrips}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Rating</p>
-          <p className="text-2xl font-bold text-yellow-500">⭐ 0.0</p>
+          <p className="text-sm text-gray-500">Upcoming Scheduled</p>
+          <p className="text-2xl font-bold text-gray-700">{upcomingScheduled.length}</p>
         </div>
-        <div className="card">
-          <p className="text-sm text-gray-500">Driver Tier</p>
-          <p className="text-2xl font-bold text-gray-700">Free</p>
-        </div>
-      </div>
-
-      {/* Active Trip or Available Trips */}
-      <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          {isOnline ? 'Waiting for trip requests...' : 'Go online to receive trip requests'}
-        </h2>
-        
-        {!isOnline && (
-          <p className="text-gray-600">
-            When you go online, you'll be able to accept on-demand ride requests and view your scheduled trips.
-          </p>
-        )}
-
-        {isOnline && (
-          <div className="text-center py-12 text-gray-500">
-            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="mt-4">No active trips. Waiting for requests...</p>
-          </div>
-        )}
       </div>
 
       {/* Upcoming Scheduled Trips */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Scheduled Trips</h2>
-        <div className="text-center py-8 text-gray-500">
-          <p>No scheduled trips for today.</p>
-          <a href="/driver/schedules" className="text-primary-600 hover:text-primary-500 mt-2 inline-block">
-            View your schedules →
-          </a>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold text-gray-900">Upcoming Scheduled Trips</h2>
+          <Link href="/driver/schedules" className="text-primary-600 text-sm hover:underline">
+            Manage →
+          </Link>
         </div>
+        {upcomingScheduled.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <p className="text-3xl mb-2">📅</p>
+            <p className="text-sm">No scheduled trips coming up.</p>
+            <Link href="/driver/schedules/new" className="text-primary-600 hover:underline mt-1 inline-block text-sm">
+              Create a schedule →
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {upcomingScheduled.map((trip) => (
+              <div key={trip.id} className="flex justify-between items-center py-2 border-b last:border-0">
+                <div>
+                  <p className="font-medium text-gray-900 text-sm">
+                    {trip.startLocationName} → {trip.endLocationName}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(trip.scheduledStartTime).toLocaleString()} ·{' '}
+                    {(trip as any).bookings.length} passenger(s)
+                  </p>
+                </div>
+                <p className="font-semibold text-gray-700 text-sm">R{(trip.totalPrice / 100).toFixed(2)}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

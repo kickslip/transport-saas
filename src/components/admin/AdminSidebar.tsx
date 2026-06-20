@@ -13,6 +13,8 @@ const navigation = [
   { name: 'Bookings', href: '/admin/bookings', icon: '🎫' },
   { name: 'Payments', href: '/admin/payments', icon: '💰' },
   { name: 'Invoices', href: '/admin/invoices', icon: '📄' },
+  { name: 'Analytics', href: '/admin/analytics', icon: '📈' },
+  { name: 'Audit Log', href: '/admin/audit', icon: '🔐' },
   { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
 ]
 

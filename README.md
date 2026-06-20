@@ -123,32 +123,34 @@ transport-saas/
 - `npm run db:studio` - Open Prisma Studio (database GUI)
 - `npm run db:seed` - Seed database with test data
 
-## Roadmap
+## Feature Status
 
-See the full implementation plan at `.windsurf/plans/transport-saas-plan-8dd0f1.md`
+### ✅ Completed (Phases 1–6)
 
-### MVP Deliverables
+| Area | Features |
+|------|----------|
+| **Auth** | Email/password + Google OAuth, role-based access |
+| **On-demand booking** | Request form → waiting screen → live driver tracking → review |
+| **Scheduled routes** | Browse/filter routes, seat picker, payment method selection, receipt |
+| **Driver tools** | Live mode (GPS broadcast), trip start/complete, manifest, attendance, cash collection |
+| **Payments** | EFT proof upload, admin verification, cash collection, wallet balance, printable receipts |
+| **Real-time** | Socket.io GPS tracking, in-app chat with quick replies, live map (Leaflet/OSM) |
+| **Admin** | Tenant/user/trip/payment/invoice management, analytics, audit log (POPIA) |
+| **Multi-tenancy** | Tenant isolation, dynamic brand theme (color/logo injected per tenant) |
+| **Reviews** | Star ratings, category scores, driver reviews page |
+| **Deployment** | `vercel.json`, `.env.example`, Prisma generate on build |
 
-1. ✅ Project scaffold with Next.js, TypeScript, Tailwind
-2. ✅ Prisma schema with multi-tenancy
-3. ✅ Authentication (NextAuth with Google + email/password)
-4. 🔄 On-demand booking flow
-5. 🔄 Scheduled/commuter booking flow
-6. 🔄 Real-time GPS tracking
-7. 🔄 EFT/Cash payment system
-8. 🔄 Payment plans (weekly/monthly)
-9. 🔄 Dashboards (Admin/Driver/Passenger)
-10. 🔄 In-app messaging
-11. 🔄 Multi-tenant middleware
-12. 🔄 Full feature roadmap guide
+### 🔄 Remaining (Post-MVP)
 
-### Post-MVP
-
-- Stripe/PayFast integration
+- Push notifications (Web Push API)
+- Calendar view of upcoming trips
+- Stripe / PayFast payment gateway
+- Automated invoice cron job + email reminders
+- CI/CD (GitHub Actions) + Sentry error tracking
 - Mobile app (React Native)
-- Advanced analytics
-- White-label customization
-- POPIA compliance audit
+- POPIA data export / right-to-deletion workflow
+
+See [ROADMAP.md](./ROADMAP.md) for the full detailed checklist.
 
 ## License
 

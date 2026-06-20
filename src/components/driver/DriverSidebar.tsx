@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import NotificationBell from '@/components/shared/NotificationBell'
 
 const navigation = [
   { name: 'Dashboard', href: '/driver', icon: '📊' },
   { name: 'My Trips', href: '/driver/trips', icon: '📍' },
   { name: 'Schedules', href: '/driver/schedules', icon: '📅' },
   { name: 'Earnings', href: '/driver/earnings', icon: '💰' },
+  { name: 'Reviews', href: '/driver/reviews', icon: '⭐' },
   { name: 'Messages', href: '/driver/messages', icon: '💬' },
   { name: 'Profile', href: '/driver/profile', icon: '👤' },
 ]
@@ -39,7 +41,11 @@ export function DriverSidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-0 w-64 p-4 border-t">
+      <div className="absolute bottom-0 w-64 p-4 border-t space-y-2">
+        <div className="flex items-center justify-between px-2">
+          <span className="text-xs text-gray-400">Notifications</span>
+          <NotificationBell />
+        </div>
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
           className="sidebar-link-inactive w-full"
