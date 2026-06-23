@@ -196,6 +196,7 @@ export const TripScheduleScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   driverId: 'driverId',
+  createdById: 'createdById',
   name: 'name',
   description: 'description',
   startLocationName: 'startLocationName',
@@ -210,6 +211,7 @@ export const TripScheduleScalarFieldEnum = {
   startTime: 'startTime',
   effectiveFrom: 'effectiveFrom',
   effectiveUntil: 'effectiveUntil',
+  status: 'status',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

@@ -81,6 +81,16 @@ export const RecurrenceType = {
 export type RecurrenceType = (typeof RecurrenceType)[keyof typeof RecurrenceType]
 
 
+export const TripScheduleStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type TripScheduleStatus = (typeof TripScheduleStatus)[keyof typeof TripScheduleStatus]
+
+
 export const BookingStatus = {
   PENDING: 'PENDING',
   CONFIRMED: 'CONFIRMED',

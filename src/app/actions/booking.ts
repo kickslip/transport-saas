@@ -41,7 +41,10 @@ export async function getAvailableSchedules(opts?: {
   day?: number
 }) {
   try {
-    const where: any = { isActive: true }
+    const where: any = {
+      isActive: true,
+      status: { in: ['ACTIVE', 'PENDING'] },
+    }
     if (opts?.tenantId) where.tenantId = opts.tenantId
     if (opts?.search) {
       where.OR = [
@@ -57,6 +60,8 @@ export async function getAvailableSchedules(opts?: {
       where,
       include: {
         tenant: { select: { name: true } },
+        driver: { select: { firstName: true, lastName: true } },
+        createdBy: { select: { firstName: true, lastName: true } },
         _count: { select: { trips: true } },
       },
       orderBy: { startTime: 'asc' },
@@ -73,6 +78,7 @@ export async function bookScheduledTrip(scheduleId: string, seatsBooked = 1) {
       where: { id: scheduleId },
     })
     if (!schedule) return { success: false, error: 'Schedule not found' }
+    if (!schedule.driverId) return { success: false, error: 'No driver assigned to this route yet' }
 
     const platformFee = Math.round(schedule.basePrice * 0.07)
 

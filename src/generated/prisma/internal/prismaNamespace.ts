@@ -1679,6 +1679,7 @@ export const TripScheduleScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   driverId: 'driverId',
+  createdById: 'createdById',
   name: 'name',
   description: 'description',
   startLocationName: 'startLocationName',
@@ -1693,6 +1694,7 @@ export const TripScheduleScalarFieldEnum = {
   startTime: 'startTime',
   effectiveFrom: 'effectiveFrom',
   effectiveUntil: 'effectiveUntil',
+  status: 'status',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2084,6 +2086,20 @@ export type EnumRecurrenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'RecurrenceType[]'
  */
 export type ListEnumRecurrenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecurrenceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TripScheduleStatus'
+ */
+export type EnumTripScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TripScheduleStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TripScheduleStatus[]'
+ */
+export type ListEnumTripScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TripScheduleStatus[]'>
     
 
 

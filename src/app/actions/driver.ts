@@ -27,14 +27,20 @@ export async function createSchedule(data: {
     select: { role: true, tenantId: true },
   })
 
-  if (user?.role !== 'DRIVER') return { success: false, error: 'Only drivers can create schedules' }
-  if (!user.tenantId) return { success: false, error: 'Driver must be assigned to a tenant' }
+  if (!user?.tenantId) return { success: false, error: 'User must be assigned to a tenant' }
+
+  const isDriver = user.role === 'DRIVER'
+  const isPassenger = user.role === 'PASSENGER'
+  if (!isDriver && !isPassenger && user.role !== 'ADMIN') {
+    return { success: false, error: 'Only drivers, passengers or admins can create schedules' }
+  }
 
   try {
     const schedule = await prisma.tripSchedule.create({
       data: {
         tenantId: user.tenantId,
-        driverId: session.user.id,
+        driverId: isDriver ? session.user.id : null,
+        createdById: isPassenger ? session.user.id : null,
         name: data.name,
         description: data.description || null,
         startLocationName: data.startLocationName,
@@ -48,14 +54,60 @@ export async function createSchedule(data: {
         daysOfWeek: data.daysOfWeek,
         recurrenceType: 'WEEKLY',
         effectiveFrom: new Date(data.effectiveFrom),
+        status: isDriver ? 'ACTIVE' : 'PENDING',
         isActive: true,
       },
     })
     revalidatePath('/driver/schedules')
+    revalidatePath('/passenger/book/scheduled')
     return { success: true, scheduleId: schedule.id }
   } catch (e) {
     console.error(e)
     return { success: false, error: 'Failed to create schedule' }
+  }
+}
+
+export async function claimSchedule(scheduleId: string) {
+  const session = await auth()
+  if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true, tenantId: true },
+  })
+
+  if (user?.role !== 'DRIVER') return { success: false, error: 'Only drivers can claim schedules' }
+  if (!user.tenantId) return { success: false, error: 'Driver must be assigned to a tenant' }
+
+  try {
+    const schedule = await prisma.tripSchedule.findUnique({
+      where: { id: scheduleId },
+    })
+    if (!schedule) return { success: false, error: 'Schedule not found' }
+    if (schedule.driverId) return { success: false, error: 'Route already has a driver' }
+    if (schedule.tenantId !== user.tenantId) return { success: false, error: 'Route belongs to another tenant' }
+
+    await prisma.tripSchedule.update({
+      where: { id: scheduleId },
+      data: {
+        driverId: session.user.id,
+        status: 'ACTIVE',
+      },
+    })
+
+    await auditLog({
+      action: 'SCHEDULE_CLAIMED',
+      userId: session.user.id,
+      entityId: scheduleId,
+      entityType: 'TripSchedule',
+    })
+
+    revalidatePath('/driver/schedules')
+    revalidatePath('/passenger/book/scheduled')
+    return { success: true }
+  } catch (e: any) {
+    console.error(e)
+    return { success: false, error: e?.message ?? 'Failed to claim schedule' }
   }
 }
 

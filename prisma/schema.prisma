@@ -97,6 +97,8 @@ model User {
   passengerReviewsReceived Review[]    @relation("ReviewedPassenger")
   auditLogs              AuditLog[]
   pushSubscriptions      PushSubscription[]
+  driverSchedules        TripSchedule[] @relation("TripScheduleDriver")
+  createdSchedules       TripSchedule[] @relation("TripScheduleCreator")
 
   @@map("users")
 }
@@ -189,12 +191,18 @@ model TripSchedule {
   id              String    @id @default(cuid())
   tenantId        String
   tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  
-  driverId        String
-  
+
+  // Driver is optional for passenger-created schedules until admin assigns one
+  driverId        String?
+  driver          User?     @relation("TripScheduleDriver", fields: [driverId], references: [id], onDelete: SetNull)
+
+  // Track passenger who created the schedule
+  createdById     String?
+  createdBy       User?     @relation("TripScheduleCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
   name            String    // e.g., "Morning Commuter - Sandton to CBD"
   description     String?
-  
+
   // Route
   startLocationName   String
   startLocationLat    Float
@@ -202,17 +210,19 @@ model TripSchedule {
   endLocationName     String
   endLocationLat      Float
   endLocationLng      Float
-  
+
   // Pricing
   basePrice       Int
-  
+
   // Recurrence pattern
   recurrenceType  RecurrenceType
   daysOfWeek      Int[]     // [1,2,3,4,5] for Mon-Fri
   startTime       String    // "08:00"
   effectiveFrom   DateTime
   effectiveUntil  DateTime?
-  
+
+  // Lifecycle
+  status          TripScheduleStatus @default(PENDING)
   isActive        Boolean   @default(true)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -581,6 +591,13 @@ enum RecurrenceType {
   WEEKDAYS
   WEEKENDS
   CUSTOM
+}
+
+enum TripScheduleStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  CANCELLED
 }
 
 enum BookingStatus {

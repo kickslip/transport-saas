@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSocket } from '@/hooks/useSocket'
 import { toggleDriverStatus } from '@/app/actions/driver'
+import LiveMap from '@/components/shared/LiveMapWrapper'
 
 type TripRequest = {
   requestId: string
@@ -106,11 +107,6 @@ export default function DriverLivePanel({
           <div className={`w-3 h-3 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
           <div>
             <p className="font-semibold text-gray-900">{isOnline ? 'You are Online' : 'You are Offline'}</p>
-            {isOnline && coords && (
-              <p className="text-xs text-gray-500">
-                GPS: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
-              </p>
-            )}
             {isOnline && !coords && (
               <p className="text-xs text-yellow-600">Acquiring GPS...</p>
             )}
@@ -128,6 +124,27 @@ export default function DriverLivePanel({
           {toggling ? '...' : isOnline ? 'Go Offline' : 'Go Online'}
         </button>
       </div>
+
+      {/* GPS Map */}
+      {isOnline && (
+        <div className="card space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-700">Your Location</h3>
+            {coords && (
+              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+              </span>
+            )}
+          </div>
+          <LiveMap
+            driverLocation={coords}
+            height="250px"
+          />
+          {!coords && (
+            <p className="text-xs text-gray-500 text-center">Allow location access to see yourself on the map.</p>
+          )}
+        </div>
+      )}
 
       {/* Trip Requests */}
       {isOnline && (

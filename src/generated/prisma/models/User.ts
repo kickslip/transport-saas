@@ -438,6 +438,8 @@ export type UserWhereInput = {
   passengerReviewsReceived?: Prisma.ReviewListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  driverSchedules?: Prisma.TripScheduleListRelationFilter
+  createdSchedules?: Prisma.TripScheduleListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -483,6 +485,8 @@ export type UserOrderByWithRelationInput = {
   passengerReviewsReceived?: Prisma.ReviewOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
+  driverSchedules?: Prisma.TripScheduleOrderByRelationAggregateInput
+  createdSchedules?: Prisma.TripScheduleOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -531,6 +535,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passengerReviewsReceived?: Prisma.ReviewListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
+  driverSchedules?: Prisma.TripScheduleListRelationFilter
+  createdSchedules?: Prisma.TripScheduleListRelationFilter
 }, "id" | "email" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -645,6 +651,8 @@ export type UserCreateInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -689,6 +697,8 @@ export type UserUncheckedCreateInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -733,6 +743,8 @@ export type UserUpdateInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -777,6 +789,8 @@ export type UserUncheckedUpdateInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1092,6 +1106,38 @@ export type UserUpdateOneRequiredWithoutDriverTripsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriverTripsInput, Prisma.UserUpdateWithoutDriverTripsInput>, Prisma.UserUncheckedUpdateWithoutDriverTripsInput>
 }
 
+export type UserCreateNestedOneWithoutDriverSchedulesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverSchedulesInput, Prisma.UserUncheckedCreateWithoutDriverSchedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverSchedulesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCreatedSchedulesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedSchedulesInput, Prisma.UserUncheckedCreateWithoutCreatedSchedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedSchedulesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDriverSchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDriverSchedulesInput, Prisma.UserUncheckedCreateWithoutDriverSchedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverSchedulesInput
+  upsert?: Prisma.UserUpsertWithoutDriverSchedulesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriverSchedulesInput, Prisma.UserUpdateWithoutDriverSchedulesInput>, Prisma.UserUncheckedUpdateWithoutDriverSchedulesInput>
+}
+
+export type UserUpdateOneWithoutCreatedSchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedSchedulesInput, Prisma.UserUncheckedCreateWithoutCreatedSchedulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedSchedulesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedSchedulesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedSchedulesInput, Prisma.UserUpdateWithoutCreatedSchedulesInput>, Prisma.UserUncheckedUpdateWithoutCreatedSchedulesInput>
+}
+
 export type UserCreateNestedOneWithoutPassengerBookingsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPassengerBookingsInput, Prisma.UserUncheckedCreateWithoutPassengerBookingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPassengerBookingsInput
@@ -1309,6 +1355,8 @@ export type UserCreateWithoutTenantInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
@@ -1352,6 +1400,8 @@ export type UserUncheckedCreateWithoutTenantInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -1455,6 +1505,8 @@ export type UserCreateWithoutDriverTripsInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDriverTripsInput = {
@@ -1498,6 +1550,8 @@ export type UserUncheckedCreateWithoutDriverTripsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDriverTripsInput = {
@@ -1557,6 +1611,8 @@ export type UserUpdateWithoutDriverTripsInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDriverTripsInput = {
@@ -1600,6 +1656,400 @@ export type UserUncheckedUpdateWithoutDriverTripsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutDriverSchedulesInput = {
+  id?: string
+  role?: $Enums.UserRole
+  email: string
+  emailVerified?: Date | string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  firstName: string
+  lastName: string
+  phoneNumber?: string | null
+  idNumber?: string | null
+  avatarUrl?: string | null
+  driverLicenseNumber?: string | null
+  driverLicenseExpiry?: Date | string | null
+  driverLicenseImageUrl?: string | null
+  driverStatus?: $Enums.DriverStatus
+  driverTier?: $Enums.DriverTier
+  driverRating?: number
+  driverReviewCount?: number
+  currentLocationLat?: number | null
+  currentLocationLng?: number | null
+  lastLocationUpdate?: Date | string | null
+  passengerRating?: number | null
+  passengerReviewCount?: number
+  walletBalance?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  driverTrips?: Prisma.TripCreateNestedManyWithoutDriverInput
+  passengerBookings?: Prisma.BookingCreateNestedManyWithoutPassengerInput
+  driverBookings?: Prisma.BookingCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageCreateNestedManyWithoutReceiverInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutUserInput
+  tripLocations?: Prisma.TripLocationCreateNestedManyWithoutDriverInput
+  driverReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutDriverInput
+  passengerReviewsGiven?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
+  passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutDriverSchedulesInput = {
+  id?: string
+  tenantId?: string | null
+  role?: $Enums.UserRole
+  email: string
+  emailVerified?: Date | string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  firstName: string
+  lastName: string
+  phoneNumber?: string | null
+  idNumber?: string | null
+  avatarUrl?: string | null
+  driverLicenseNumber?: string | null
+  driverLicenseExpiry?: Date | string | null
+  driverLicenseImageUrl?: string | null
+  driverStatus?: $Enums.DriverStatus
+  driverTier?: $Enums.DriverTier
+  driverRating?: number
+  driverReviewCount?: number
+  currentLocationLat?: number | null
+  currentLocationLng?: number | null
+  lastLocationUpdate?: Date | string | null
+  passengerRating?: number | null
+  passengerReviewCount?: number
+  walletBalance?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  driverTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDriverInput
+  passengerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPassengerInput
+  driverBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutReceiverInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutUserInput
+  tripLocations?: Prisma.TripLocationUncheckedCreateNestedManyWithoutDriverInput
+  driverReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutDriverInput
+  passengerReviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
+  passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutDriverSchedulesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriverSchedulesInput, Prisma.UserUncheckedCreateWithoutDriverSchedulesInput>
+}
+
+export type UserCreateWithoutCreatedSchedulesInput = {
+  id?: string
+  role?: $Enums.UserRole
+  email: string
+  emailVerified?: Date | string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  firstName: string
+  lastName: string
+  phoneNumber?: string | null
+  idNumber?: string | null
+  avatarUrl?: string | null
+  driverLicenseNumber?: string | null
+  driverLicenseExpiry?: Date | string | null
+  driverLicenseImageUrl?: string | null
+  driverStatus?: $Enums.DriverStatus
+  driverTier?: $Enums.DriverTier
+  driverRating?: number
+  driverReviewCount?: number
+  currentLocationLat?: number | null
+  currentLocationLng?: number | null
+  lastLocationUpdate?: Date | string | null
+  passengerRating?: number | null
+  passengerReviewCount?: number
+  walletBalance?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  driverTrips?: Prisma.TripCreateNestedManyWithoutDriverInput
+  passengerBookings?: Prisma.BookingCreateNestedManyWithoutPassengerInput
+  driverBookings?: Prisma.BookingCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageCreateNestedManyWithoutReceiverInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutUserInput
+  tripLocations?: Prisma.TripLocationCreateNestedManyWithoutDriverInput
+  driverReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutDriverInput
+  passengerReviewsGiven?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
+  passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+}
+
+export type UserUncheckedCreateWithoutCreatedSchedulesInput = {
+  id?: string
+  tenantId?: string | null
+  role?: $Enums.UserRole
+  email: string
+  emailVerified?: Date | string | null
+  passwordHash?: string | null
+  googleId?: string | null
+  firstName: string
+  lastName: string
+  phoneNumber?: string | null
+  idNumber?: string | null
+  avatarUrl?: string | null
+  driverLicenseNumber?: string | null
+  driverLicenseExpiry?: Date | string | null
+  driverLicenseImageUrl?: string | null
+  driverStatus?: $Enums.DriverStatus
+  driverTier?: $Enums.DriverTier
+  driverRating?: number
+  driverReviewCount?: number
+  currentLocationLat?: number | null
+  currentLocationLng?: number | null
+  lastLocationUpdate?: Date | string | null
+  passengerRating?: number | null
+  passengerReviewCount?: number
+  walletBalance?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  driverTrips?: Prisma.TripUncheckedCreateNestedManyWithoutDriverInput
+  passengerBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPassengerInput
+  driverBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDriverInput
+  sentMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  receivedMessages?: Prisma.MessageUncheckedCreateNestedManyWithoutReceiverInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutUserInput
+  tripLocations?: Prisma.TripLocationUncheckedCreateNestedManyWithoutDriverInput
+  driverReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutDriverInput
+  passengerReviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
+  passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+}
+
+export type UserCreateOrConnectWithoutCreatedSchedulesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedSchedulesInput, Prisma.UserUncheckedCreateWithoutCreatedSchedulesInput>
+}
+
+export type UserUpsertWithoutDriverSchedulesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDriverSchedulesInput, Prisma.UserUncheckedUpdateWithoutDriverSchedulesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDriverSchedulesInput, Prisma.UserUncheckedCreateWithoutDriverSchedulesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDriverSchedulesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDriverSchedulesInput, Prisma.UserUncheckedUpdateWithoutDriverSchedulesInput>
+}
+
+export type UserUpdateWithoutDriverSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  driverLicenseImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverStatus?: Prisma.EnumDriverStatusFieldUpdateOperationsInput | $Enums.DriverStatus
+  driverTier?: Prisma.EnumDriverTierFieldUpdateOperationsInput | $Enums.DriverTier
+  driverRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  driverReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLocationLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currentLocationLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passengerRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  passengerReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  driverTrips?: Prisma.TripUpdateManyWithoutDriverNestedInput
+  passengerBookings?: Prisma.BookingUpdateManyWithoutPassengerNestedInput
+  driverBookings?: Prisma.BookingUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUpdateManyWithoutReceiverNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutUserNestedInput
+  tripLocations?: Prisma.TripLocationUpdateManyWithoutDriverNestedInput
+  driverReviewsReceived?: Prisma.ReviewUpdateManyWithoutDriverNestedInput
+  passengerReviewsGiven?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
+  passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDriverSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  driverLicenseImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverStatus?: Prisma.EnumDriverStatusFieldUpdateOperationsInput | $Enums.DriverStatus
+  driverTier?: Prisma.EnumDriverTierFieldUpdateOperationsInput | $Enums.DriverTier
+  driverRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  driverReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLocationLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currentLocationLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passengerRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  passengerReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  driverTrips?: Prisma.TripUncheckedUpdateManyWithoutDriverNestedInput
+  passengerBookings?: Prisma.BookingUncheckedUpdateManyWithoutPassengerNestedInput
+  driverBookings?: Prisma.BookingUncheckedUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUncheckedUpdateManyWithoutReceiverNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutUserNestedInput
+  tripLocations?: Prisma.TripLocationUncheckedUpdateManyWithoutDriverNestedInput
+  driverReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutDriverNestedInput
+  passengerReviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUpsertWithoutCreatedSchedulesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedSchedulesInput, Prisma.UserUncheckedUpdateWithoutCreatedSchedulesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedSchedulesInput, Prisma.UserUncheckedCreateWithoutCreatedSchedulesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedSchedulesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedSchedulesInput, Prisma.UserUncheckedUpdateWithoutCreatedSchedulesInput>
+}
+
+export type UserUpdateWithoutCreatedSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  driverLicenseImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverStatus?: Prisma.EnumDriverStatusFieldUpdateOperationsInput | $Enums.DriverStatus
+  driverTier?: Prisma.EnumDriverTierFieldUpdateOperationsInput | $Enums.DriverTier
+  driverRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  driverReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLocationLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currentLocationLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passengerRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  passengerReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  driverTrips?: Prisma.TripUpdateManyWithoutDriverNestedInput
+  passengerBookings?: Prisma.BookingUpdateManyWithoutPassengerNestedInput
+  driverBookings?: Prisma.BookingUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUpdateManyWithoutReceiverNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutUserNestedInput
+  tripLocations?: Prisma.TripLocationUpdateManyWithoutDriverNestedInput
+  driverReviewsReceived?: Prisma.ReviewUpdateManyWithoutDriverNestedInput
+  passengerReviewsGiven?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
+  passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverLicenseExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  driverLicenseImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  driverStatus?: Prisma.EnumDriverStatusFieldUpdateOperationsInput | $Enums.DriverStatus
+  driverTier?: Prisma.EnumDriverTierFieldUpdateOperationsInput | $Enums.DriverTier
+  driverRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  driverReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLocationLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  currentLocationLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passengerRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  passengerReviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  driverTrips?: Prisma.TripUncheckedUpdateManyWithoutDriverNestedInput
+  passengerBookings?: Prisma.BookingUncheckedUpdateManyWithoutPassengerNestedInput
+  driverBookings?: Prisma.BookingUncheckedUpdateManyWithoutDriverNestedInput
+  sentMessages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  receivedMessages?: Prisma.MessageUncheckedUpdateManyWithoutReceiverNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutUserNestedInput
+  tripLocations?: Prisma.TripLocationUncheckedUpdateManyWithoutDriverNestedInput
+  driverReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutDriverNestedInput
+  passengerReviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
 }
 
 export type UserCreateWithoutPassengerBookingsInput = {
@@ -1643,6 +2093,8 @@ export type UserCreateWithoutPassengerBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPassengerBookingsInput = {
@@ -1686,6 +2138,8 @@ export type UserUncheckedCreateWithoutPassengerBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPassengerBookingsInput = {
@@ -1734,6 +2188,8 @@ export type UserCreateWithoutDriverBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDriverBookingsInput = {
@@ -1777,6 +2233,8 @@ export type UserUncheckedCreateWithoutDriverBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDriverBookingsInput = {
@@ -1836,6 +2294,8 @@ export type UserUpdateWithoutPassengerBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPassengerBookingsInput = {
@@ -1879,6 +2339,8 @@ export type UserUncheckedUpdateWithoutPassengerBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutDriverBookingsInput = {
@@ -1933,6 +2395,8 @@ export type UserUpdateWithoutDriverBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDriverBookingsInput = {
@@ -1976,6 +2440,8 @@ export type UserUncheckedUpdateWithoutDriverBookingsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTripLocationsInput = {
@@ -2019,6 +2485,8 @@ export type UserCreateWithoutTripLocationsInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTripLocationsInput = {
@@ -2062,6 +2530,8 @@ export type UserUncheckedCreateWithoutTripLocationsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTripLocationsInput = {
@@ -2121,6 +2591,8 @@ export type UserUpdateWithoutTripLocationsInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTripLocationsInput = {
@@ -2164,6 +2636,8 @@ export type UserUncheckedUpdateWithoutTripLocationsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -2207,6 +2681,8 @@ export type UserCreateWithoutPaymentsInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -2250,6 +2726,8 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -2309,6 +2787,8 @@ export type UserUpdateWithoutPaymentsInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -2352,6 +2832,8 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPaymentPlansInput = {
@@ -2395,6 +2877,8 @@ export type UserCreateWithoutPaymentPlansInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentPlansInput = {
@@ -2438,6 +2922,8 @@ export type UserUncheckedCreateWithoutPaymentPlansInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentPlansInput = {
@@ -2497,6 +2983,8 @@ export type UserUpdateWithoutPaymentPlansInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentPlansInput = {
@@ -2540,6 +3028,8 @@ export type UserUncheckedUpdateWithoutPaymentPlansInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSentMessagesInput = {
@@ -2583,6 +3073,8 @@ export type UserCreateWithoutSentMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -2626,6 +3118,8 @@ export type UserUncheckedCreateWithoutSentMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -2674,6 +3168,8 @@ export type UserCreateWithoutReceivedMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -2717,6 +3213,8 @@ export type UserUncheckedCreateWithoutReceivedMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -2776,6 +3274,8 @@ export type UserUpdateWithoutSentMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -2819,6 +3319,8 @@ export type UserUncheckedUpdateWithoutSentMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutReceivedMessagesInput = {
@@ -2873,6 +3375,8 @@ export type UserUpdateWithoutReceivedMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -2916,6 +3420,8 @@ export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPassengerReviewsGivenInput = {
@@ -2959,6 +3465,8 @@ export type UserCreateWithoutPassengerReviewsGivenInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPassengerReviewsGivenInput = {
@@ -3002,6 +3510,8 @@ export type UserUncheckedCreateWithoutPassengerReviewsGivenInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPassengerReviewsGivenInput = {
@@ -3050,6 +3560,8 @@ export type UserCreateWithoutDriverReviewsReceivedInput = {
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDriverReviewsReceivedInput = {
@@ -3093,6 +3605,8 @@ export type UserUncheckedCreateWithoutDriverReviewsReceivedInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDriverReviewsReceivedInput = {
@@ -3141,6 +3655,8 @@ export type UserCreateWithoutPassengerReviewsReceivedInput = {
   passengerReviewsGiven?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPassengerReviewsReceivedInput = {
@@ -3184,6 +3700,8 @@ export type UserUncheckedCreateWithoutPassengerReviewsReceivedInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPassengerReviewsReceivedInput = {
@@ -3243,6 +3761,8 @@ export type UserUpdateWithoutPassengerReviewsGivenInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPassengerReviewsGivenInput = {
@@ -3286,6 +3806,8 @@ export type UserUncheckedUpdateWithoutPassengerReviewsGivenInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutDriverReviewsReceivedInput = {
@@ -3340,6 +3862,8 @@ export type UserUpdateWithoutDriverReviewsReceivedInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDriverReviewsReceivedInput = {
@@ -3383,6 +3907,8 @@ export type UserUncheckedUpdateWithoutDriverReviewsReceivedInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUpsertWithoutPassengerReviewsReceivedInput = {
@@ -3437,6 +3963,8 @@ export type UserUpdateWithoutPassengerReviewsReceivedInput = {
   passengerReviewsGiven?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPassengerReviewsReceivedInput = {
@@ -3480,6 +4008,8 @@ export type UserUncheckedUpdateWithoutPassengerReviewsReceivedInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -3523,6 +4053,8 @@ export type UserCreateWithoutAuditLogsInput = {
   passengerReviewsGiven?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -3566,6 +4098,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -3625,6 +4159,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   passengerReviewsGiven?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -3668,6 +4204,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPushSubscriptionsInput = {
@@ -3711,6 +4249,8 @@ export type UserCreateWithoutPushSubscriptionsInput = {
   passengerReviewsGiven?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   passengerReviewsReceived?: Prisma.ReviewCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -3754,6 +4294,8 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   passengerReviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutPassengerInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  driverSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutDriverInput
+  createdSchedules?: Prisma.TripScheduleUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -3813,6 +4355,8 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
   passengerReviewsGiven?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -3856,6 +4400,8 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
   passengerReviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyTenantInput = {
@@ -3929,6 +4475,8 @@ export type UserUpdateWithoutTenantInput = {
   passengerReviewsReceived?: Prisma.ReviewUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
@@ -3972,6 +4520,8 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   passengerReviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutPassengerNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  driverSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutDriverNestedInput
+  createdSchedules?: Prisma.TripScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -4023,6 +4573,8 @@ export type UserCountOutputType = {
   passengerReviewsReceived: number
   auditLogs: number
   pushSubscriptions: number
+  driverSchedules: number
+  createdSchedules: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4039,6 +4591,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   passengerReviewsReceived?: boolean | UserCountOutputTypeCountPassengerReviewsReceivedArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
+  driverSchedules?: boolean | UserCountOutputTypeCountDriverSchedulesArgs
+  createdSchedules?: boolean | UserCountOutputTypeCountCreatedSchedulesArgs
 }
 
 /**
@@ -4142,6 +4696,20 @@ export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends runtim
   where?: Prisma.PushSubscriptionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDriverSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripScheduleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TripScheduleWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4186,6 +4754,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passengerReviewsReceived?: boolean | Prisma.User$passengerReviewsReceivedArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  driverSchedules?: boolean | Prisma.User$driverSchedulesArgs<ExtArgs>
+  createdSchedules?: boolean | Prisma.User$createdSchedulesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -4300,6 +4870,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   passengerReviewsReceived?: boolean | Prisma.User$passengerReviewsReceivedArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
+  driverSchedules?: boolean | Prisma.User$driverSchedulesArgs<ExtArgs>
+  createdSchedules?: boolean | Prisma.User$createdSchedulesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4326,6 +4898,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passengerReviewsReceived: Prisma.$ReviewPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
+    driverSchedules: Prisma.$TripSchedulePayload<ExtArgs>[]
+    createdSchedules: Prisma.$TripSchedulePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4764,6 +5338,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   passengerReviewsReceived<T extends Prisma.User$passengerReviewsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passengerReviewsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pushSubscriptions<T extends Prisma.User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  driverSchedules<T extends Prisma.User$driverSchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$driverSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdSchedules<T extends Prisma.User$createdSchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TripSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5550,6 +6126,54 @@ export type User$pushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
+}
+
+/**
+ * User.driverSchedules
+ */
+export type User$driverSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TripSchedule
+   */
+  select?: Prisma.TripScheduleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TripSchedule
+   */
+  omit?: Prisma.TripScheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripScheduleInclude<ExtArgs> | null
+  where?: Prisma.TripScheduleWhereInput
+  orderBy?: Prisma.TripScheduleOrderByWithRelationInput | Prisma.TripScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.TripScheduleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripScheduleScalarFieldEnum | Prisma.TripScheduleScalarFieldEnum[]
+}
+
+/**
+ * User.createdSchedules
+ */
+export type User$createdSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TripSchedule
+   */
+  select?: Prisma.TripScheduleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TripSchedule
+   */
+  omit?: Prisma.TripScheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TripScheduleInclude<ExtArgs> | null
+  where?: Prisma.TripScheduleWhereInput
+  orderBy?: Prisma.TripScheduleOrderByWithRelationInput | Prisma.TripScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.TripScheduleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TripScheduleScalarFieldEnum | Prisma.TripScheduleScalarFieldEnum[]
 }
 
 /**

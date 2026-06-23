@@ -365,6 +365,13 @@ export type EnumRecurrenceTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel> | $Enums.RecurrenceType
 }
 
+export type EnumTripScheduleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TripScheduleStatus | Prisma.EnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel> | $Enums.TripScheduleStatus
+}
+
 export type EnumRecurrenceTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.RecurrenceType | Prisma.EnumRecurrenceTypeFieldRefInput<$PrismaModel>
   in?: $Enums.RecurrenceType[] | Prisma.ListEnumRecurrenceTypeFieldRefInput<$PrismaModel>
@@ -373,6 +380,16 @@ export type EnumRecurrenceTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel>
+}
+
+export type EnumTripScheduleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TripScheduleStatus | Prisma.EnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTripScheduleStatusWithAggregatesFilter<$PrismaModel> | $Enums.TripScheduleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel>
 }
 
 export type EnumBookingStatusFilter<$PrismaModel = never> = {
@@ -883,6 +900,13 @@ export type NestedEnumRecurrenceTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel> | $Enums.RecurrenceType
 }
 
+export type NestedEnumTripScheduleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TripScheduleStatus | Prisma.EnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel> | $Enums.TripScheduleStatus
+}
+
 export type NestedEnumRecurrenceTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.RecurrenceType | Prisma.EnumRecurrenceTypeFieldRefInput<$PrismaModel>
   in?: $Enums.RecurrenceType[] | Prisma.ListEnumRecurrenceTypeFieldRefInput<$PrismaModel>
@@ -891,6 +915,16 @@ export type NestedEnumRecurrenceTypeWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecurrenceTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumTripScheduleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TripScheduleStatus | Prisma.EnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TripScheduleStatus[] | Prisma.ListEnumTripScheduleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTripScheduleStatusWithAggregatesFilter<$PrismaModel> | $Enums.TripScheduleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTripScheduleStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumBookingStatusFilter<$PrismaModel = never> = {

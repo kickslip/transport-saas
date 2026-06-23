@@ -19,6 +19,7 @@ export type AuditAction =
   | 'TENANT_CREATED'
   | 'TENANT_SUSPENDED'
   | 'TENANT_UPDATED'
+  | 'SCHEDULE_CLAIMED'
   | 'DATA_EXPORT'
   | 'DATA_DELETION_REQUEST'
 

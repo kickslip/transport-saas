@@ -1,1 +1,10 @@
-{}
+{
+  "components\\shared\\LiveMapWrapper.tsx -> ./LiveMap": {
+    "id": 2034,
+    "files": [
+      "static/css/fc1c9daac70c093b.css",
+      "static/chunks/d0deef33.8939d2e5cad19017.js",
+      "static/chunks/2034.0bca15eb22cceaaa.js"
+    ]
+  }
+}
