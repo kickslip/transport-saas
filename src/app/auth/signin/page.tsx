@@ -166,6 +166,46 @@ function SignInForm() {
           </div>
         </div>
 
+        {/* Demo accounts */}
+        <div className="mt-6 rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 text-center">
+            🧪 Demo Accounts — One-Click Login
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { label: 'Admin',     email: 'admin@example.com',     password: 'admin123',     color: 'bg-purple-100 text-purple-800 hover:bg-purple-200', icon: '🛡️' },
+              { label: 'Driver',    email: 'driver@example.com',    password: 'driver123',    color: 'bg-blue-100 text-blue-800 hover:bg-blue-200',     icon: '🚐' },
+              { label: 'Passenger', email: 'passenger@example.com', password: 'passenger123', color: 'bg-green-100 text-green-800 hover:bg-green-200',   icon: '🧍' },
+            ].map(({ label, email: e, password: p, color, icon }) => (
+              <button
+                key={label}
+                type="button"
+                disabled={isLoading}
+                onClick={async () => {
+                  setIsLoading(true)
+                  setError('')
+                  const result = await signIn('credentials', { email: e, password: p, redirect: false })
+                  if (result?.error) {
+                    setError('Demo login failed')
+                    setIsLoading(false)
+                  } else {
+                    const session = await getSession()
+                    const role = (session?.user as any)?.role
+                    if (role === 'DRIVER') router.push('/driver')
+                    else if (role === 'ADMIN') router.push('/admin')
+                    else router.push('/passenger')
+                    router.refresh()
+                  }
+                }}
+                className={`flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-xs font-medium transition-colors ${color}`}
+              >
+                <span className="text-lg">{icon}</span>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="text-center">
           <Link href="/" className="text-sm text-gray-500 hover:text-gray-900">
             ← Back to home
