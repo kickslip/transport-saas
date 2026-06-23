@@ -20,7 +20,7 @@ const rand = (min: number, max: number) => Math.floor(Math.random() * (max - min
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000)
 const hoursFromNow = (h: number) => new Date(Date.now() + h * 3_600_000)
 let refN = 1
-const ref = () => `REF-SEED-${String(refN++).padStart(5, '0')}`
+const ref = () => `REF-SEED-${Date.now()}-${String(refN++).padStart(5, '0')}-${Math.random().toString(36).slice(2, 6)}`
 
 async function main() {
   console.log('🌱 Seeding database...')

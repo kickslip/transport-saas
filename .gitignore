@@ -4,3 +4,13 @@ node_modules
 .env*.local
 .vercel
 .env*
+
+# Next.js build output
+.next
+next-env.d.ts
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Prisma generated client (optional — keep if you want to commit it)
+# src/generated/prisma

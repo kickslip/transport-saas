@@ -28,21 +28,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         try {
+          console.log('[authorize] credentials received:', credentials?.email)
           const parsed = credentialsSchema.parse(credentials)
+          console.log('[authorize] parsed:', parsed.email)
 
           const user = await prisma.user.findUnique({
             where: { email: parsed.email },
             include: { tenant: true },
           })
+          console.log('[authorize] user found:', !!user, 'active:', user?.isActive)
 
           if (!user || !user.passwordHash) return null
           if (!user.isActive) return null
 
           const isValid = await bcrypt.compare(parsed.password, user.passwordHash)
+          console.log('[authorize] password valid:', isValid)
           if (!isValid) return null
 
           if (parsed.tenantId && user.tenantId !== parsed.tenantId) return null
 
+          console.log('[authorize] returning user:', user.email, user.role)
           return {
             id: user.id,
             email: user.email,
@@ -51,7 +56,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             tenantId: user.tenantId,
             image: user.avatarUrl,
           }
-        } catch {
+        } catch (e: any) {
+          console.error('[authorize] credentials sign-in error:', e)
           return null
         }
       },
