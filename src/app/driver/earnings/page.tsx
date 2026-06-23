@@ -30,7 +30,7 @@ export default async function DriverEarningsPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <div className="card text-center">
           <p className="text-sm text-gray-500">Total Earnings</p>
           <p className="text-3xl font-bold text-green-600 mt-1">R{(totalCents / 100).toFixed(2)}</p>

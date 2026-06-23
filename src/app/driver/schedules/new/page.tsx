@@ -83,7 +83,7 @@ export default function NewSchedulePage() {
             value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">📍 From (Pickup)</label>
             <input required className="input w-full" placeholder="Area or address"
@@ -96,7 +96,7 @@ export default function NewSchedulePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">🕐 Departure Time</label>
             <input type="time" required className="input w-full"

@@ -49,7 +49,7 @@ export default function OnDemandBookingPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
         <Link href="/passenger" className="text-gray-500 hover:text-gray-700">← Back</Link>
-        <h1 className="text-2xl font-bold text-gray-900">Request On-Demand Ride</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Request On-Demand Ride</h1>
       </div>
 
       <div className="card">

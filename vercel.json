@@ -4,11 +4,7 @@
   "installCommand": "npm install",
   "regions": ["fra1"],
   "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "DEFAULT_TENANT_SAAS_FEE": "20000",
-    "CRON_SECRET": "@cron_secret"
+    "DEFAULT_TENANT_SAAS_FEE": "20000"
   },
   "crons": [
     {

@@ -40,7 +40,7 @@ export default async function DriverDashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">
           Welcome back, {user?.firstName ?? 'Driver'} 👋
         </h1>
       </div>
@@ -54,18 +54,18 @@ export default async function DriverDashboardPage() {
       )}
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <div className="card">
           <p className="text-sm text-gray-500">Trips Today</p>
-          <p className="text-2xl font-bold text-green-600">{completedToday}</p>
+          <p className="text-xl font-bold text-green-600 sm:text-2xl">{completedToday}</p>
         </div>
         <div className="card">
           <p className="text-sm text-gray-500">Total Completed</p>
-          <p className="text-2xl font-bold text-primary-600">{totalTrips}</p>
+          <p className="text-xl font-bold text-primary-600 sm:text-2xl">{totalTrips}</p>
         </div>
         <div className="card">
           <p className="text-sm text-gray-500">Upcoming Scheduled</p>
-          <p className="text-2xl font-bold text-gray-700">{upcomingScheduled.length}</p>
+          <p className="text-xl font-bold text-gray-700 sm:text-2xl">{upcomingScheduled.length}</p>
         </div>
       </div>
 

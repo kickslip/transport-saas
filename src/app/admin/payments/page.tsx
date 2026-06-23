@@ -23,7 +23,7 @@ export default async function AdminPaymentsPage({
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Payments ({payments.length})</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Payments ({payments.length})</h1>
       </div>
 
       {pendingEft.length > 0 && (
@@ -34,8 +34,8 @@ export default async function AdminPaymentsPage({
         </div>
       )}
 
-      <form method="GET" className="flex gap-3">
-        <select name="status" defaultValue={searchParams.status ?? ''} className="input w-44">
+      <form method="GET" className="flex flex-wrap gap-3">
+        <select name="status" defaultValue={searchParams.status ?? ''} className="input flex-1 min-w-[9rem]">
           <option value="">All Statuses</option>
           <option value="PENDING">Pending</option>
           <option value="COMPLETED">Completed</option>
@@ -44,7 +44,7 @@ export default async function AdminPaymentsPage({
         <button type="submit" className="btn-primary px-4">Filter</button>
       </form>
 
-      <div className="card overflow-hidden p-0">
+      <div className="card overflow-hidden p-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

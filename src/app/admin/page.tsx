@@ -25,37 +25,37 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">Admin Dashboard</h1>
         <Link href="/admin/tenants/new" className="btn-primary">
           + New Tenant
         </Link>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
         <div className="card">
-          <p className="text-sm text-gray-500">Tenants</p>
-          <p className="text-2xl font-bold text-primary-600">{tenantCount}</p>
+          <p className="text-xs text-gray-500">Tenants</p>
+          <p className="text-lg font-bold text-primary-600 sm:text-2xl">{tenantCount}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Drivers</p>
-          <p className="text-2xl font-bold text-primary-600">{driverCount}</p>
+          <p className="text-xs text-gray-500">Drivers</p>
+          <p className="text-lg font-bold text-primary-600 sm:text-2xl">{driverCount}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Passengers</p>
-          <p className="text-2xl font-bold text-primary-600">{passengerCount}</p>
+          <p className="text-xs text-gray-500">Passengers</p>
+          <p className="text-lg font-bold text-primary-600 sm:text-2xl">{passengerCount}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Vehicles</p>
-          <p className="text-2xl font-bold text-primary-600">{vehicleCount}</p>
+          <p className="text-xs text-gray-500">Vehicles</p>
+          <p className="text-lg font-bold text-primary-600 sm:text-2xl">{vehicleCount}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Active Trips</p>
-          <p className="text-2xl font-bold text-green-600">{activeTripCount}</p>
+          <p className="text-xs text-gray-500">Active Trips</p>
+          <p className="text-lg font-bold text-green-600 sm:text-2xl">{activeTripCount}</p>
         </div>
         <div className="card">
-          <p className="text-sm text-gray-500">Pending Bookings</p>
-          <p className="text-2xl font-bold text-yellow-600">{pendingBookingCount}</p>
+          <p className="text-xs text-gray-500">Pending</p>
+          <p className="text-lg font-bold text-yellow-600 sm:text-2xl">{pendingBookingCount}</p>
         </div>
       </div>
 

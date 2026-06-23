@@ -22,7 +22,7 @@ export default async function DriverLayout({
       <TenantThemeInjector primaryColor={theme.primaryColor} tenantName={theme.name} />
       <div className="flex h-screen">
         <DriverSidebar />
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto pt-14 pb-20 px-4 lg:pt-0 lg:pb-0 lg:p-8">
           {children}
         </main>
       </div>

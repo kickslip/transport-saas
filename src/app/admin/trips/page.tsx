@@ -30,18 +30,18 @@ export default async function AdminTripsPage({
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Trips ({trips.length})</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Trips ({trips.length})</h1>
       </div>
 
-      <form method="GET" className="flex gap-3">
-        <select name="status" defaultValue={searchParams.status ?? ''} className="input w-44">
+      <form method="GET" className="flex flex-wrap gap-3">
+        <select name="status" defaultValue={searchParams.status ?? ''} className="input flex-1 min-w-[9rem]">
           <option value="">All Statuses</option>
           <option value="SCHEDULED">Scheduled</option>
           <option value="IN_PROGRESS">In Progress</option>
           <option value="COMPLETED">Completed</option>
           <option value="CANCELLED">Cancelled</option>
         </select>
-        <select name="type" defaultValue={searchParams.type ?? ''} className="input w-44">
+        <select name="type" defaultValue={searchParams.type ?? ''} className="input flex-1 min-w-[9rem]">
           <option value="">All Types</option>
           <option value="ON_DEMAND">On-Demand</option>
           <option value="SCHEDULED">Scheduled</option>
@@ -49,7 +49,7 @@ export default async function AdminTripsPage({
         <button type="submit" className="btn-primary px-4">Filter</button>
       </form>
 
-      <div className="card overflow-hidden p-0">
+      <div className="card overflow-hidden p-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

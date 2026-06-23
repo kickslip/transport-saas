@@ -29,18 +29,18 @@ export default async function AdminUsersPage({
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Users ({users.length})</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Users ({users.length})</h1>
       </div>
 
       {/* Filters */}
-      <form method="GET" className="flex gap-3">
+      <form method="GET" className="flex flex-col sm:flex-row gap-3">
         <input
           name="search"
           defaultValue={searchParams.search}
           placeholder="Search name or email..."
           className="input flex-1"
         />
-        <select name="role" defaultValue={searchParams.role ?? ''} className="input w-40">
+        <select name="role" defaultValue={searchParams.role ?? ''} className="input sm:w-40">
           <option value="">All Roles</option>
           <option value="ADMIN">Admin</option>
           <option value="DRIVER">Driver</option>
@@ -49,7 +49,7 @@ export default async function AdminUsersPage({
         <button type="submit" className="btn-primary px-4">Filter</button>
       </form>
 
-      <div className="card overflow-hidden p-0">
+      <div className="card overflow-hidden p-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

@@ -7,29 +7,29 @@ export default async function PassengerDashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Passenger Dashboard</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">Passenger Dashboard</h1>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <div className="card">
           <p className="text-sm text-gray-500">Upcoming Trips</p>
-          <p className="text-2xl font-bold text-primary-600">{stats.upcoming}</p>
+          <p className="text-xl font-bold text-primary-600 sm:text-2xl">{stats.upcoming}</p>
         </div>
         <div className="card">
           <p className="text-sm text-gray-500">Wallet Balance</p>
-          <p className="text-2xl font-bold text-green-600">R0.00</p>
+          <p className="text-xl font-bold text-green-600 sm:text-2xl">R0.00</p>
         </div>
         <div className="card">
           <p className="text-sm text-gray-500">Total Trips</p>
-          <p className="text-2xl font-bold text-gray-700">{stats.total}</p>
+          <p className="text-xl font-bold text-gray-700 sm:text-2xl">{stats.total}</p>
         </div>
       </div>
 
       {/* Book a Trip Section */}
       <div className="card">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Book a Trip</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-gray-50 rounded-lg p-6">
             <p className="font-medium text-gray-800 mb-2">� On-Demand Ride</p>
             <p className="text-sm text-gray-600 mb-4">Request a ride right now.</p>

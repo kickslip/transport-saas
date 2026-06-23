@@ -17,7 +17,7 @@ export default async function DriverProfilePage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
+      <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">My Profile</h1>
       {user ? <DriverProfileForm user={user} /> : <p className="text-gray-500">Unable to load profile.</p>}
     </div>
   )

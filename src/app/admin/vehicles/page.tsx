@@ -11,10 +11,10 @@ export default async function AdminVehiclesPage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Vehicles ({vehicles.length})</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Vehicles ({vehicles.length})</h1>
       </div>
 
-      <div className="card overflow-hidden p-0">
+      <div className="card overflow-hidden p-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

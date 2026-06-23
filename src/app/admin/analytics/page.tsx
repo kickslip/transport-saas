@@ -84,10 +84,10 @@ export default async function AdminAnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Analytics & Revenue</h1>
+      <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Analytics & Revenue</h1>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <div className="card">
           <p className="text-sm text-gray-500">Total Revenue (6 mo)</p>
           <p className="text-3xl font-bold text-primary-600">R{(totalRevenue / 100).toFixed(2)}</p>

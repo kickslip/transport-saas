@@ -26,7 +26,7 @@ export default async function ScheduledRoutesPage({
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
         <Link href="/passenger" className="text-gray-500 hover:text-gray-700">← Back</Link>
-        <h1 className="text-2xl font-bold text-gray-900">Available Routes</h1>
+        <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Available Routes</h1>
       </div>
 
       <ScheduleFilters />
@@ -44,7 +44,7 @@ export default async function ScheduledRoutesPage({
         <div className="space-y-4">
           {schedules.map((schedule) => (
             <div key={schedule.id} className="card hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 text-lg">{schedule.name}</h3>
                   {schedule.description && (
@@ -79,7 +79,7 @@ export default async function ScheduledRoutesPage({
                   </div>
                 </div>
 
-                <div className="ml-6 text-right">
+                <div className="sm:ml-6 text-left sm:text-right flex-shrink-0">
                   <p className="text-2xl font-bold text-primary-600">{formatPrice(schedule.basePrice)}</p>
                   <p className="text-xs text-gray-500">per trip</p>
                   <BookScheduleButton scheduleId={schedule.id} basePrice={schedule.basePrice} />

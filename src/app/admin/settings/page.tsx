@@ -8,12 +8,12 @@ export default async function AdminSettingsPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Platform Settings</h1>
+      <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Platform Settings</h1>
 
       {/* Platform fees */}
       <div className="card">
         <h2 className="font-semibold text-gray-900 mb-4">Platform Fee Configuration</h2>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="text-gray-500 text-xs uppercase font-medium mb-1">Passenger Booking Fee</p>
             <p className="text-2xl font-bold text-gray-900">
