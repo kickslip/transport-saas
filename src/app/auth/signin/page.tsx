@@ -33,17 +33,18 @@ function SignInForm() {
         setError('Invalid email or password')
       } else {
         if (callbackUrl) {
-          router.push(callbackUrl)
+          await router.push(callbackUrl)
         } else {
           const session = await getSession()
           const role = (session?.user as any)?.role
-          if (role === 'DRIVER') router.push('/driver')
-          else if (role === 'ADMIN') router.push('/admin')
-          else router.push('/passenger')
+          if (role === 'DRIVER') await router.push('/driver')
+          else if (role === 'ADMIN') await router.push('/admin')
+          else await router.push('/passenger')
         }
         router.refresh()
       }
-    } catch {
+    } catch (err) {
+      console.error('[form sign-in] error', err)
       setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -173,10 +174,10 @@ function SignInForm() {
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Admin',     email: 'admin@example.com',     password: 'admin123',     color: 'bg-purple-100 text-purple-800 hover:bg-purple-200', icon: '🛡️' },
-              { label: 'Driver',    email: 'driver@example.com',    password: 'driver123',    color: 'bg-blue-100 text-blue-800 hover:bg-blue-200',     icon: '🚐' },
-              { label: 'Passenger', email: 'passenger@example.com', password: 'passenger123', color: 'bg-green-100 text-green-800 hover:bg-green-200',   icon: '🧍' },
-            ].map(({ label, email: e, password: p, color, icon }) => (
+              { label: 'Admin',     email: 'admin@example.com',     password: 'admin123',     color: 'bg-purple-100 text-purple-800 hover:bg-purple-200', icon: '🛡️', defaultUrl: '/admin' },
+              { label: 'Driver',    email: 'driver@example.com',    password: 'driver123',    color: 'bg-blue-100 text-blue-800 hover:bg-blue-200',     icon: '🚐', defaultUrl: '/driver' },
+              { label: 'Passenger', email: 'passenger@example.com', password: 'passenger123', color: 'bg-green-100 text-green-800 hover:bg-green-200',   icon: '🧍', defaultUrl: '/passenger' },
+            ].map(({ label, email: e, password: p, color, icon, defaultUrl }) => (
               <button
                 key={label}
                 type="button"
@@ -184,17 +185,13 @@ function SignInForm() {
                 onClick={async () => {
                   setIsLoading(true)
                   setError('')
-                  const result = await signIn('credentials', { email: e, password: p, redirect: false })
-                  if (result?.error) {
+                  try {
+                    const target = callbackUrl || defaultUrl
+                    await signIn('credentials', { email: e, password: p, redirect: true, callbackUrl: target })
+                  } catch (err) {
+                    console.error('[demo sign-in] error', err)
                     setError('Demo login failed')
                     setIsLoading(false)
-                  } else {
-                    const session = await getSession()
-                    const role = (session?.user as any)?.role
-                    if (role === 'DRIVER') router.push('/driver')
-                    else if (role === 'ADMIN') router.push('/admin')
-                    else router.push('/passenger')
-                    router.refresh()
                   }
                 }}
                 className={`flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-xs font-medium transition-colors ${color}`}
