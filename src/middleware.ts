@@ -1,40 +1,22 @@
-import { getToken } from 'next-auth/jwt'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
+  const cookie = req.headers.get('cookie') ?? ''
 
-  try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET! })
+  // Lightweight session cookie check (JWT verification happens in pages/actions)
+  const sessionToken = cookie
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith('next-auth.session-token=') || c.startsWith('__Secure-next-auth.session-token='))
 
-    if (!token) {
-      const signInUrl = new URL('/auth/signin', req.url)
-      signInUrl.searchParams.set('callbackUrl', path)
-      return NextResponse.redirect(signInUrl)
-    }
-
-    const role = (token.role as string) ?? ''
-
-    // Role-based access control
-    if (path.startsWith('/admin') && role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url))
-    }
-
-    if (path.startsWith('/driver') && !['DRIVER', 'ADMIN'].includes(role)) {
-      return NextResponse.redirect(new URL('/unauthorized', req.url))
-    }
-
-    if (path.startsWith('/passenger') && !['PASSENGER', 'ADMIN'].includes(role)) {
-      return NextResponse.redirect(new URL('/unauthorized', req.url))
-    }
-
-    return NextResponse.next()
-  } catch (e) {
-    console.error('[middleware] auth check failed', e)
+  if (!sessionToken) {
     const signInUrl = new URL('/auth/signin', req.url)
     signInUrl.searchParams.set('callbackUrl', path)
     return NextResponse.redirect(signInUrl)
   }
+
+  return NextResponse.next()
 }
 
 export const config = {
