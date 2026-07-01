@@ -8,7 +8,7 @@ export type TenantTheme = {
 }
 
 const DEFAULT_THEME: TenantTheme = {
-  name: 'Transport SaaS',
+  name: 'WanToe',
   primaryColor: '#2563eb',
   logoUrl: null,
 }

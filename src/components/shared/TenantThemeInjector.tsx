@@ -35,7 +35,7 @@ export default function TenantThemeInjector({
   useEffect(() => {
     const hsl = hexToHsl(primaryColor)
     document.documentElement.style.setProperty('--color-primary', hsl)
-    document.title = `${tenantName} | Transport`
+    document.title = `${tenantName} | WanToe`
   }, [primaryColor, tenantName])
 
   return null

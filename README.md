@@ -1,6 +1,6 @@
-# Transport SaaS
+# WanToe
 
-Multi-tenant transport management platform supporting both on-demand ride-hailing and scheduled commuter bookings.
+On-demand rides and scheduled commuter transport platform connecting passengers with trusted local drivers.
 
 ## Features
 

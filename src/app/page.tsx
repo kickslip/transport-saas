@@ -21,7 +21,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16 items-center">
               <div className="flex items-center">
-                <span className="text-2xl font-bold text-white drop-shadow">TransportSaaS</span>
+                <span className="text-2xl font-bold text-white drop-shadow">WanToe</span>
               </div>
               <div className="flex space-x-4">
                 <Link
@@ -46,12 +46,12 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight" style={{textShadow:'0 2px 16px rgba(0,0,0,0.8)'}}>
-                Transport Management
-                <span className="block text-yellow-400">Made Simple</span>
+                Your Ride, Your Route
+                <span className="block text-yellow-400">WanToe</span>
               </h1>
               <p className="mt-6 max-w-2xl mx-auto text-xl text-white font-medium" style={{textShadow:'0 1px 8px rgba(0,0,0,0.7)'}}>
-                Multi-tenant platform for ride-hailing and scheduled transport.
-                Connect passengers with drivers, manage fleets, and handle payments—all in one place.
+                Book on-demand rides or scheduled commuter trips with trusted local drivers.
+                Simple, safe, and built for your neighbourhood.
               </p>
               <div className="mt-10 flex justify-center gap-4 flex-wrap">
                 <Link
@@ -111,7 +111,7 @@ export default function HomePage() {
       <footer className="bg-gray-50 border-t">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} TransportSaaS. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} WanToe. All rights reserved.</p>
             <p className="mt-2">POPIA Compliant • Secure • Scalable</p>
           </div>
         </div>
