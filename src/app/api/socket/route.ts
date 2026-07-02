@@ -85,6 +85,7 @@ const ioHandler = (req: Request) => {
     // Trip request (for on-demand)
     socket.on('trip-request', (data: {
       requestId: string
+      tripId: string
       passengerId: string
       pickup: { lat: number; lng: number; name: string }
       dropoff: { lat: number; lng: number; name: string }

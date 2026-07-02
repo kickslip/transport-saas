@@ -53,11 +53,11 @@ export default async function PassengerMessagesPage() {
                 className="flex items-center gap-4 px-4 py-4 hover:bg-gray-50 transition-colors"
               >
                 <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold flex-none">
-                  {driver.firstName?.[0] ?? '?'}
+                  {driver?.firstName?.[0] ?? '?'}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate">
-                    {driver.firstName} {driver.lastName}
+                    {driver ? `${driver.firstName} ${driver.lastName}` : 'Unassigned'}
                   </p>
                   <p className="text-xs text-gray-500 truncate">
                     {booking.trip.startLocationName} → {booking.trip.endLocationName}

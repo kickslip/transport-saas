@@ -79,7 +79,7 @@ export default async function AdminDashboardPage() {
                 <tr key={trip.id}>
                   <td className="px-4 py-2 text-sm text-gray-900">{trip.tenant.name}</td>
                   <td className="px-4 py-2 text-sm text-gray-900">
-                    {trip.driver.firstName} {trip.driver.lastName}
+                    {trip.driver ? `${trip.driver.firstName} ${trip.driver.lastName}` : 'Unassigned'}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-500">
                     {trip.startLocationName} → {trip.endLocationName}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSocket } from '@/hooks/useSocket'
 import LiveMap from '@/components/shared/LiveMapWrapper'
+import { calculateDistance } from '@/components/maps/LiveMap'
 
 type DriverLocation = {
   driverId: string
@@ -13,7 +14,19 @@ type DriverLocation = {
   timestamp: string
 }
 
-export default function TripTracker({ tripId, driverName }: { tripId: string; driverName: string }) {
+export default function TripTracker({
+  tripId,
+  driverName,
+  driverPhone,
+  pickup,
+  dropoff,
+}: {
+  tripId: string
+  driverName: string
+  driverPhone?: string | null
+  pickup?: { lat: number; lng: number; name: string } | null
+  dropoff?: { lat: number; lng: number; name: string } | null
+}) {
   const { emit, on } = useSocket()
   const [driverLoc, setDriverLoc] = useState<DriverLocation | null>(null)
   const [driverStatus, setDriverStatus] = useState<string | null>(null)
@@ -39,6 +52,15 @@ export default function TripTracker({ tripId, driverName }: { tripId: string; dr
     }
   }, [tripId, emit, on])
 
+  const eta =
+    driverLoc && pickup && driverLoc.speed && driverLoc.speed > 0
+      ? Math.round(
+          (calculateDistance(driverLoc.latitude, driverLoc.longitude, pickup.lat, pickup.lng) /
+            (driverLoc.speed * 3.6)) *
+            60,
+        )
+      : null
+
   return (
     <div className="card border-blue-200 bg-blue-50 space-y-3">
       <div className="flex items-center gap-2">
@@ -57,10 +79,27 @@ export default function TripTracker({ tripId, driverName }: { tripId: string; dr
             <span className="capitalize">{driverStatus.replace(/_/g, ' ').toLowerCase()}</span>
           </p>
         )}
+        {eta != null && (
+          <p className="text-gray-700">
+            <span className="font-medium">ETA to pickup:</span>{' '}
+            {eta < 1 ? '< 1 min' : `${eta} min`}
+          </p>
+        )}
       </div>
+
+      {driverPhone && (
+        <a
+          href={`tel:${driverPhone}`}
+          className="inline-flex items-center gap-2 text-sm text-primary-600 hover:underline"
+        >
+          📞 Contact driver
+        </a>
+      )}
 
       <LiveMap
         driverLocation={driverLoc ? { lat: driverLoc.latitude, lng: driverLoc.longitude } : null}
+        pickupLocation={pickup}
+        dropoffLocation={dropoff}
         height="220px"
       />
 

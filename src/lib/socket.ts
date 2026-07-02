@@ -51,6 +51,7 @@ export interface ServerToClientEvents {
   
   'new-trip-request': (data: {
     requestId: string
+    tripId: string
     passengerId: string
     pickup: { lat: number; lng: number; name: string }
     dropoff: { lat: number; lng: number; name: string }
@@ -88,6 +89,7 @@ export interface ClientToServerEvents {
   }) => void
   'trip-request': (data: {
     requestId: string
+    tripId: string
     passengerId: string
     pickup: { lat: number; lng: number; name: string }
     dropoff: { lat: number; lng: number; name: string }

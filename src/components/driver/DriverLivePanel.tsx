@@ -3,10 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSocket } from '@/hooks/useSocket'
 import { toggleDriverStatus } from '@/app/actions/driver'
+import { assignDriverToTrip } from '@/app/actions/trips'
 import LiveMap from '@/components/shared/LiveMapWrapper'
 
 type TripRequest = {
   requestId: string
+  tripId: string
   passengerId: string
   pickup: { lat: number; lng: number; name: string }
   dropoff: { lat: number; lng: number; name: string }
@@ -23,6 +25,7 @@ export default function DriverLivePanel({
   const { emit, on } = useSocket()
   const [status, setStatus] = useState(initialStatus)
   const [requests, setRequests] = useState<TripRequest[]>([])
+  const [activeTripId, setActiveTripId] = useState<string | null>(null)
   const [toggling, setToggling] = useState(false)
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
   const watchIdRef = useRef<number | null>(null)
@@ -55,15 +58,17 @@ export default function DriverLivePanel({
         const { latitude, longitude, accuracy, speed } = pos.coords
         setCoords({ lat: latitude, lng: longitude })
         emit('driver-status', { driverId, status: 'ONLINE' })
-        // Broadcast location to any active trip rooms the driver is in
-        emit('driver-location', {
-          tripId: 'broadcast',
-          driverId,
-          latitude,
-          longitude,
-          accuracy: accuracy ?? undefined,
-          speed: speed ?? undefined,
-        })
+        // Broadcast location to active trip room only
+        if (activeTripId) {
+          emit('driver-location', {
+            tripId: activeTripId,
+            driverId,
+            latitude,
+            longitude,
+            accuracy: accuracy ?? undefined,
+            speed: speed ?? undefined,
+          })
+        }
       },
       (err) => console.warn('Geolocation error:', err),
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 },
@@ -75,7 +80,7 @@ export default function DriverLivePanel({
         watchIdRef.current = null
       }
     }
-  }, [status, driverId, emit])
+  }, [status, driverId, emit, activeTripId])
 
   const handleToggle = async () => {
     setToggling(true)
@@ -88,8 +93,20 @@ export default function DriverLivePanel({
     setToggling(false)
   }
 
-  const handleAccept = (req: TripRequest) => {
-    emit('accept-trip', { requestId: req.requestId, driverId, tripId: req.requestId })
+  const handleAccept = async (req: TripRequest) => {
+    const result = await assignDriverToTrip({
+      tripId: req.tripId,
+      driverId,
+    })
+    if (!result.success) {
+      alert(result.error || 'Could not accept ride. It may have been taken by another driver.')
+      setRequests((prev) => prev.filter((r) => r.requestId !== req.requestId))
+      return
+    }
+    emit('accept-trip', { requestId: req.requestId, driverId, tripId: req.tripId })
+    emit('join-trip', req.tripId)
+    emit('driver-status', { driverId, status: 'DRIVER_ASSIGNED', tripId: req.tripId })
+    setActiveTripId(req.tripId)
     setRequests((prev) => prev.filter((r) => r.requestId !== req.requestId))
   }
 

@@ -137,9 +137,9 @@ model Trip {
   
   tripType        TripType
   
-  // Driver assignment
-  driverId        String
-  driver          User      @relation("DriverTrips", fields: [driverId], references: [id], onDelete: Cascade)
+  // Driver assignment (optional until an on-demand driver accepts)
+  driverId        String?
+  driver          User?      @relation("DriverTrips", fields: [driverId], references: [id], onDelete: SetNull)
   
   vehicleId       String?
   vehicle         Vehicle?  @relation(fields: [vehicleId], references: [id])
@@ -576,6 +576,7 @@ enum TripType {
 }
 
 enum TripStatus {
+  PENDING_DRIVER
   SCHEDULED
   DRIVER_ASSIGNED
   DRIVER_EN_ROUTE

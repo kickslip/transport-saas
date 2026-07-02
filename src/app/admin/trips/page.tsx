@@ -62,7 +62,7 @@ export default async function AdminTripsPage({
             {trips.map((t) => (
               <tr key={t.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 text-sm text-gray-600">{t.tenant.name}</td>
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">{t.driver.firstName} {t.driver.lastName}</td>
+                <td className="px-4 py-3 text-sm font-medium text-gray-900">{t.driver ? `${t.driver.firstName} ${t.driver.lastName}` : 'Unassigned'}</td>
                 <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate">{t.startLocationName} → {t.endLocationName}</td>
                 <td className="px-4 py-3 text-sm">
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${t.tripType === 'ON_DEMAND' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>

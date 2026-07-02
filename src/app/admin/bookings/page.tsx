@@ -71,7 +71,9 @@ export default async function AdminBookingsPage({
                 <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate">
                   {b.trip.startLocationName} → {b.trip.endLocationName}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">{b.trip.driver.firstName} {b.trip.driver.lastName}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">
+                  {b.trip.driver ? `${b.trip.driver.firstName} ${b.trip.driver.lastName}` : 'Unassigned'}
+                </td>
                 <td className="px-4 py-3 text-sm text-gray-700">{b.seatsBooked}</td>
                 <td className="px-4 py-3 text-sm font-medium text-gray-900">R{(b.totalPrice / 100).toFixed(2)}</td>
                 <td className="px-4 py-3">

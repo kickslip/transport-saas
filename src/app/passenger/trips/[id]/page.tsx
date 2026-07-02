@@ -72,23 +72,40 @@ export default async function TripDetailPage({ params }: { params: { id: string 
           </div>
           <div>
             <p className="text-gray-500 text-xs">Driver</p>
-            <p className="font-medium text-gray-900">
-              {booking.trip.driver.firstName} {booking.trip.driver.lastName}
-            </p>
-            {booking.trip.driver.phoneNumber && (
-              <a href={`tel:${booking.trip.driver.phoneNumber}`} className="text-primary-600 text-xs hover:underline">
-                {booking.trip.driver.phoneNumber}
-              </a>
+            {booking.trip.driver ? (
+              <>
+                <p className="font-medium text-gray-900">
+                  {booking.trip.driver.firstName} {booking.trip.driver.lastName}
+                </p>
+                {booking.trip.driver.phoneNumber && (
+                  <a href={`tel:${booking.trip.driver.phoneNumber}`} className="text-primary-600 text-xs hover:underline">
+                    {booking.trip.driver.phoneNumber}
+                  </a>
+                )}
+              </>
+            ) : (
+              <p className="font-medium text-gray-900">Awaiting driver assignment</p>
             )}
           </div>
         </div>
       </div>
 
       {/* Live Tracking (only for active trips) */}
-      {isActive && (
+      {isActive && booking.trip.driver && (
         <TripTracker
           tripId={booking.tripId}
           driverName={`${booking.trip.driver.firstName} ${booking.trip.driver.lastName}`}
+          driverPhone={booking.trip.driver.phoneNumber}
+          pickup={{
+            lat: booking.trip.startLocationLat,
+            lng: booking.trip.startLocationLng,
+            name: booking.trip.startLocationName,
+          }}
+          dropoff={{
+            lat: booking.trip.endLocationLat,
+            lng: booking.trip.endLocationLng,
+            name: booking.trip.endLocationName,
+          }}
         />
       )}
 
@@ -101,7 +118,7 @@ export default async function TripDetailPage({ params }: { params: { id: string 
         </div>
       )}
 
-      {isCompleted && (
+      {isCompleted && booking.trip.driver && (
         existingReview ? (
           <div className="card">
             <h3 className="font-semibold text-gray-900 mb-3">Your Review</h3>
@@ -121,12 +138,14 @@ export default async function TripDetailPage({ params }: { params: { id: string 
       )}
 
       {/* Chat */}
-      <TripChat
-        tripId={booking.tripId}
-        currentUserId={session.user.id}
-        receiverId={booking.trip.driver.id}
-        initialMessages={messages as any}
-      />
+      {booking.trip.driver && (
+        <TripChat
+          tripId={booking.tripId}
+          currentUserId={session.user.id}
+          receiverId={booking.trip.driver.id}
+          initialMessages={messages as any}
+        />
+      )}
     </div>
   )
 }

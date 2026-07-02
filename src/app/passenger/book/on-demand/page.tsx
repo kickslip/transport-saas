@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSocket } from '@/hooks/useSocket'
 import { useSession } from 'next-auth/react'
+import { createOnDemandRequest } from '@/app/actions/trips'
 
 export default function OnDemandBookingPage() {
   const router = useRouter()
@@ -24,17 +25,51 @@ export default function OnDemandBookingPage() {
     setIsLoading(true)
     setError('')
     try {
-      const requestId = `${session?.user?.id ?? 'anon'}-${Date.now()}`
+      const passengerId = session?.user?.id
+      const tenantId = session?.user?.tenantId
+      if (!passengerId || !tenantId) {
+        setError('Please sign in to request a ride.')
+        setIsLoading(false)
+        return
+      }
+
       const estimatedPrice = 5000 // R50 stub — real pricing from server action
+      const platformFee = Math.round(estimatedPrice * 0.07)
+      const result = await createOnDemandRequest({
+        tenantId,
+        passengerId,
+        pickupName: form.pickupLocation,
+        pickupLat: 0,
+        pickupLng: 0,
+        dropoffName: form.dropoffLocation,
+        dropoffLat: 0,
+        dropoffLng: 0,
+        basePrice: estimatedPrice,
+        platformFee,
+        notes: form.notes,
+      })
+
+      if (!result.success || !result.trip) {
+        setError(result.error || 'Failed to create ride request.')
+        setIsLoading(false)
+        return
+      }
+
+      const tripId = result.trip.id
+      const bookingId = result.bookingId
+      const requestId = `${passengerId}-${Date.now()}`
       emit('trip-request', {
         requestId,
-        passengerId: session?.user?.id ?? '',
+        tripId,
+        passengerId,
         pickup: { lat: 0, lng: 0, name: form.pickupLocation },
         dropoff: { lat: 0, lng: 0, name: form.dropoffLocation },
-        price: estimatedPrice,
+        price: estimatedPrice + platformFee,
       })
       const qs = new URLSearchParams({
         requestId,
+        tripId,
+        ...(bookingId && { bookingId }),
         pickup: form.pickupLocation,
         dropoff: form.dropoffLocation,
       })

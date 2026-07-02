@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 const createTripSchema = z.object({
   tenantId: z.string(),
-  driverId: z.string(),
+  driverId: z.string().optional(),
   tripType: z.enum(['ON_DEMAND', 'SCHEDULED']),
   vehicleId: z.string().optional(),
   tripScheduleId: z.string().optional(),
@@ -49,7 +49,7 @@ export async function createTrip(data: z.infer<typeof createTripSchema>) {
         scheduledStartTime: parsed.scheduledStartTime,
         availableSeats: parsed.availableSeats,
         notes: parsed.notes,
-        status: 'SCHEDULED',
+        status: parsed.tripType === 'ON_DEMAND' && !parsed.driverId ? 'PENDING_DRIVER' : 'SCHEDULED',
       },
     })
 
@@ -69,6 +69,7 @@ export async function createTrip(data: z.infer<typeof createTripSchema>) {
 const updateTripStatusSchema = z.object({
   tripId: z.string(),
   status: z.enum([
+    'PENDING_DRIVER',
     'SCHEDULED',
     'DRIVER_ASSIGNED',
     'DRIVER_EN_ROUTE',
@@ -110,6 +111,108 @@ export async function updateTripStatus(data: z.infer<typeof updateTripStatusSche
     }
     console.error('Update trip status error:', error)
     return { success: false, error: 'Failed to update trip status' }
+  }
+}
+
+const onDemandRequestSchema = z.object({
+  tenantId: z.string(),
+  passengerId: z.string(),
+  pickupName: z.string(),
+  pickupLat: z.number(),
+  pickupLng: z.number(),
+  dropoffName: z.string(),
+  dropoffLat: z.number(),
+  dropoffLng: z.number(),
+  basePrice: z.number().min(0),
+  platformFee: z.number().default(0),
+  notes: z.string().optional(),
+})
+
+export async function createOnDemandRequest(data: z.infer<typeof onDemandRequestSchema>) {
+  try {
+    const parsed = onDemandRequestSchema.parse(data)
+    const totalPrice = parsed.basePrice + parsed.platformFee
+
+    const trip = await prisma.trip.create({
+      data: {
+        tenantId: parsed.tenantId,
+        tripType: 'ON_DEMAND',
+        startLocationName: parsed.pickupName,
+        startLocationLat: parsed.pickupLat,
+        startLocationLng: parsed.pickupLng,
+        endLocationName: parsed.dropoffName,
+        endLocationLat: parsed.dropoffLat,
+        endLocationLng: parsed.dropoffLng,
+        basePrice: parsed.basePrice,
+        platformFee: parsed.platformFee,
+        totalPrice,
+        scheduledStartTime: new Date(),
+        status: 'PENDING_DRIVER',
+        notes: parsed.notes,
+        bookings: {
+          create: {
+            tenantId: parsed.tenantId,
+            passengerId: parsed.passengerId,
+            status: 'PENDING',
+            basePrice: parsed.basePrice,
+            platformFee: parsed.platformFee,
+            totalPrice,
+            seatsBooked: 1,
+          },
+        },
+      },
+      include: { bookings: true },
+    })
+
+    revalidatePath('/admin/trips')
+    revalidatePath('/passenger/trips')
+
+    return { success: true, trip, bookingId: trip.bookings[0]?.id }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { success: false, error: 'Invalid input data' }
+    }
+    console.error('Create on-demand request error:', error)
+    return { success: false, error: 'Failed to create ride request' }
+  }
+}
+
+const assignDriverSchema = z.object({
+  tripId: z.string(),
+  driverId: z.string(),
+  vehicleId: z.string().optional(),
+})
+
+export async function assignDriverToTrip(data: z.infer<typeof assignDriverSchema>) {
+  try {
+    const parsed = assignDriverSchema.parse(data)
+
+    const [trip, booking] = await prisma.$transaction([
+      prisma.trip.update({
+        where: { id: parsed.tripId, status: 'PENDING_DRIVER' },
+        data: {
+          driverId: parsed.driverId,
+          vehicleId: parsed.vehicleId,
+          status: 'DRIVER_ASSIGNED',
+        },
+      }),
+      prisma.booking.updateMany({
+        where: { tripId: parsed.tripId },
+        data: { status: 'DRIVER_ASSIGNED' },
+      }),
+    ])
+
+    revalidatePath('/admin/trips')
+    revalidatePath('/driver/trips')
+    revalidatePath('/passenger/trips')
+
+    return { success: true, trip }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { success: false, error: 'Invalid input data' }
+    }
+    console.error('Assign driver error:', error)
+    return { success: false, error: 'Failed to assign driver' }
   }
 }
 

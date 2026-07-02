@@ -58,6 +58,7 @@ export type TripType = (typeof TripType)[keyof typeof TripType]
 
 
 export const TripStatus = {
+  PENDING_DRIVER: 'PENDING_DRIVER',
   SCHEDULED: 'SCHEDULED',
   DRIVER_ASSIGNED: 'DRIVER_ASSIGNED',
   DRIVER_EN_ROUTE: 'DRIVER_EN_ROUTE',

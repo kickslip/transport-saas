@@ -65,7 +65,9 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           </div>
           <div>
             <p className="text-gray-400 text-xs">Driver</p>
-            <p className="font-medium text-gray-900">{booking.trip.driver.firstName} {booking.trip.driver.lastName}</p>
+            <p className="font-medium text-gray-900">
+              {booking.trip.driver ? `${booking.trip.driver.firstName} ${booking.trip.driver.lastName}` : 'Unassigned'}
+            </p>
           </div>
           <div>
             <p className="text-gray-400 text-xs">From</p>

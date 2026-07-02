@@ -1008,14 +1008,14 @@ export type UserSumOrderByAggregateInput = {
   walletBalance?: Prisma.SortOrder
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
-}
-
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCreateNestedManyWithoutTenantInput = {
@@ -1098,10 +1098,12 @@ export type UserCreateNestedOneWithoutDriverTripsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutDriverTripsNestedInput = {
+export type UserUpdateOneWithoutDriverTripsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutDriverTripsInput, Prisma.UserUncheckedCreateWithoutDriverTripsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutDriverTripsInput
   upsert?: Prisma.UserUpsertWithoutDriverTripsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDriverTripsInput, Prisma.UserUpdateWithoutDriverTripsInput>, Prisma.UserUncheckedUpdateWithoutDriverTripsInput>
 }

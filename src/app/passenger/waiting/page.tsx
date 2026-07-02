@@ -9,9 +9,11 @@ export default function WaitingPage() {
   const router = useRouter()
   const params = useSearchParams()
   const requestId = params.get('requestId') ?? ''
+  const tripId = params.get('tripId') ?? ''
+  const bookingId = params.get('bookingId') ?? ''
   const pickup = params.get('pickup') ?? 'Your location'
   const dropoff = params.get('dropoff') ?? 'Destination'
-  const { on } = useSocket()
+  const { emit, on } = useSocket()
 
   const [elapsed, setElapsed] = useState(0)
   const [driverCount] = useState(Math.floor(Math.random() * 4) + 1)
@@ -23,16 +25,22 @@ export default function WaitingPage() {
     return () => clearInterval(t)
   }, [])
 
+  // Join trip room for live updates
+  useEffect(() => {
+    if (tripId) emit('join-trip', tripId)
+  }, [tripId, emit])
+
   // Listen for driver acceptance
   useEffect(() => {
     const off = on('trip-accepted', (data) => {
       if (data.requestId === requestId) {
         setAccepted(true)
-        setTimeout(() => router.push(`/passenger/trips`), 1500)
+        const targetId = bookingId || data.tripId || tripId
+        setTimeout(() => router.push(`/passenger/trips/${targetId}`), 1500)
       }
     })
     return off
-  }, [on, requestId, router])
+  }, [on, requestId, tripId, bookingId, router])
 
   const mins = Math.floor(elapsed / 60)
   const secs = elapsed % 60
