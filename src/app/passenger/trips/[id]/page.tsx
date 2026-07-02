@@ -48,7 +48,11 @@ export default async function TripDetailPage({ params }: { params: { id: string 
             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
               booking.status === 'COMPLETED' ? 'bg-gray-100 text-gray-600' :
               booking.status.includes('CANCEL') ? 'bg-red-100 text-red-700' :
-              'bg-blue-100 text-blue-700'
+              booking.status === 'IN_PROGRESS' ? 'bg-green-100 text-green-700' :
+              booking.status === 'DRIVER_ARRIVED' ? 'bg-purple-100 text-purple-700' :
+              booking.status === 'DRIVER_EN_ROUTE' ? 'bg-indigo-100 text-indigo-700' :
+              booking.status === 'DRIVER_ASSIGNED' ? 'bg-blue-100 text-blue-700' :
+              'bg-yellow-100 text-yellow-700'
             }`}>
               {booking.status.replace(/_/g, ' ')}
             </span>

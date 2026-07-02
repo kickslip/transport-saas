@@ -93,13 +93,14 @@ This document outlines all required steps and features for the complete WanToe a
 
 #### Driver Journey:
 - [x] Online/offline toggle (server action ready)
-  - [ ] Geolocation tracking *(Socket.io client needed)*
-  - [ ] Socket.io driver status broadcast *(in progress)*
-- [ ] Trip request notification
-  - [ ] Accept/decline interface
+  - [x] Geolocation tracking *(Socket.io client)*
+  - [x] Socket.io driver status broadcast
+- [x] Trip request notification
+  - [x] Accept/decline interface
 - [x] Start/end trip flow
   - [x] Trip start action (status → IN_PROGRESS, time recorded)
   - [x] Trip complete action (status → COMPLETED, time recorded)
+  - [x] En route / arrived at pickup statuses
   - [ ] Passenger confirmation
 
 ### 2.2 Scheduled/Commuter Flow
@@ -185,13 +186,13 @@ This document outlines all required steps and features for the complete WanToe a
 - [x] Real wallet balance computed from verified EFT payments
 - [x] EFT proof upload (POST /api/upload/proof → saves to public/uploads/proofs)
 - [x] Admin payment verification with proof link
-- [ ] Deduct from wallet for trips
+- [x] Deduct from wallet for trips on completion
 - [ ] Cloud file storage (S3/Cloudinary)
 
 ### 3.4 Passenger Booking Fee (Monetization)
-- [ ] Add platform fee to checkout
-- [ ] Display transparently to passenger
-- [ ] Configure fee amount in tenant settings
+- [x] Add platform fee to checkout
+- [x] Display transparently to passenger
+- [x] Configure fee amount in tenant settings
 - [ ] Track revenue per tenant
 
 ---
@@ -401,19 +402,19 @@ This document outlines all required steps and features for the complete WanToe a
 - [ ] Tenant billing settings UI
 
 ### Passenger Booking Fee
-- [ ] Add booking fee calculation to checkout
-- [ ] Display fee breakdown to passenger
+- [x] Add booking fee calculation to checkout
+- [x] Display fee breakdown to passenger
 - [ ] Store fee revenue per tenant
 - [ ] Reporting dashboard for fee revenue
 
 ### Driver Freemium Tier
-- [ ] Free tier: Basic access
-- [ ] Premium tier (R200/month):
-  - [ ] Verified badge
+- [x] Free tier: Basic access
+- [x] Premium tier (R200/month):
+  - [x] Verified badge
   - [ ] Priority matching
   - [ ] Advanced analytics
-  - [ ] Premium support
-- [ ] Upgrade/downgrade workflow
+  - [x] Premium support
+- [x] Upgrade/downgrade workflow
 - [ ] Subscription management
 
 ---

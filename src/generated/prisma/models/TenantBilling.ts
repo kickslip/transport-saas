@@ -28,10 +28,14 @@ export type AggregateTenantBilling = {
 
 export type TenantBillingAvgAggregateOutputType = {
   billingDay: number | null
+  bookingFeePercent: number | null
+  saasFeePerVehicle: number | null
 }
 
 export type TenantBillingSumAggregateOutputType = {
   billingDay: number | null
+  bookingFeePercent: number | null
+  saasFeePerVehicle: number | null
 }
 
 export type TenantBillingMinAggregateOutputType = {
@@ -42,6 +46,8 @@ export type TenantBillingMinAggregateOutputType = {
   paymentMethod: $Enums.PaymentMethod | null
   autoInvoice: boolean | null
   autoRemind: boolean | null
+  bookingFeePercent: number | null
+  saasFeePerVehicle: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +60,8 @@ export type TenantBillingMaxAggregateOutputType = {
   paymentMethod: $Enums.PaymentMethod | null
   autoInvoice: boolean | null
   autoRemind: boolean | null
+  bookingFeePercent: number | null
+  saasFeePerVehicle: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +74,8 @@ export type TenantBillingCountAggregateOutputType = {
   paymentMethod: number
   autoInvoice: number
   autoRemind: number
+  bookingFeePercent: number
+  saasFeePerVehicle: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,10 +84,14 @@ export type TenantBillingCountAggregateOutputType = {
 
 export type TenantBillingAvgAggregateInputType = {
   billingDay?: true
+  bookingFeePercent?: true
+  saasFeePerVehicle?: true
 }
 
 export type TenantBillingSumAggregateInputType = {
   billingDay?: true
+  bookingFeePercent?: true
+  saasFeePerVehicle?: true
 }
 
 export type TenantBillingMinAggregateInputType = {
@@ -88,6 +102,8 @@ export type TenantBillingMinAggregateInputType = {
   paymentMethod?: true
   autoInvoice?: true
   autoRemind?: true
+  bookingFeePercent?: true
+  saasFeePerVehicle?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +116,8 @@ export type TenantBillingMaxAggregateInputType = {
   paymentMethod?: true
   autoInvoice?: true
   autoRemind?: true
+  bookingFeePercent?: true
+  saasFeePerVehicle?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +130,8 @@ export type TenantBillingCountAggregateInputType = {
   paymentMethod?: true
   autoInvoice?: true
   autoRemind?: true
+  bookingFeePercent?: true
+  saasFeePerVehicle?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +231,8 @@ export type TenantBillingGroupByOutputType = {
   paymentMethod: $Enums.PaymentMethod
   autoInvoice: boolean
   autoRemind: boolean
+  bookingFeePercent: number
+  saasFeePerVehicle: number
   createdAt: Date
   updatedAt: Date
   _count: TenantBillingCountAggregateOutputType | null
@@ -246,6 +268,8 @@ export type TenantBillingWhereInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFilter<"TenantBilling"> | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFilter<"TenantBilling"> | boolean
   autoRemind?: Prisma.BoolFilter<"TenantBilling"> | boolean
+  bookingFeePercent?: Prisma.IntFilter<"TenantBilling"> | number
+  saasFeePerVehicle?: Prisma.IntFilter<"TenantBilling"> | number
   createdAt?: Prisma.DateTimeFilter<"TenantBilling"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TenantBilling"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -259,6 +283,8 @@ export type TenantBillingOrderByWithRelationInput = {
   paymentMethod?: Prisma.SortOrder
   autoInvoice?: Prisma.SortOrder
   autoRemind?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -275,6 +301,8 @@ export type TenantBillingWhereUniqueInput = Prisma.AtLeast<{
   paymentMethod?: Prisma.EnumPaymentMethodFilter<"TenantBilling"> | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFilter<"TenantBilling"> | boolean
   autoRemind?: Prisma.BoolFilter<"TenantBilling"> | boolean
+  bookingFeePercent?: Prisma.IntFilter<"TenantBilling"> | number
+  saasFeePerVehicle?: Prisma.IntFilter<"TenantBilling"> | number
   createdAt?: Prisma.DateTimeFilter<"TenantBilling"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TenantBilling"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -288,6 +316,8 @@ export type TenantBillingOrderByWithAggregationInput = {
   paymentMethod?: Prisma.SortOrder
   autoInvoice?: Prisma.SortOrder
   autoRemind?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TenantBillingCountOrderByAggregateInput
@@ -308,6 +338,8 @@ export type TenantBillingScalarWhereWithAggregatesInput = {
   paymentMethod?: Prisma.EnumPaymentMethodWithAggregatesFilter<"TenantBilling"> | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolWithAggregatesFilter<"TenantBilling"> | boolean
   autoRemind?: Prisma.BoolWithAggregatesFilter<"TenantBilling"> | boolean
+  bookingFeePercent?: Prisma.IntWithAggregatesFilter<"TenantBilling"> | number
+  saasFeePerVehicle?: Prisma.IntWithAggregatesFilter<"TenantBilling"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TenantBilling"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TenantBilling"> | Date | string
 }
@@ -319,6 +351,8 @@ export type TenantBillingCreateInput = {
   paymentMethod?: $Enums.PaymentMethod
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: number
+  saasFeePerVehicle?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantBillingInput
@@ -332,6 +366,8 @@ export type TenantBillingUncheckedCreateInput = {
   paymentMethod?: $Enums.PaymentMethod
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: number
+  saasFeePerVehicle?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,6 +379,8 @@ export type TenantBillingUpdateInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantBillingNestedInput
@@ -356,6 +394,8 @@ export type TenantBillingUncheckedUpdateInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -368,6 +408,8 @@ export type TenantBillingCreateManyInput = {
   paymentMethod?: $Enums.PaymentMethod
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: number
+  saasFeePerVehicle?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -379,6 +421,8 @@ export type TenantBillingUpdateManyMutationInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +435,8 @@ export type TenantBillingUncheckedUpdateManyInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -408,12 +454,16 @@ export type TenantBillingCountOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   autoInvoice?: Prisma.SortOrder
   autoRemind?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TenantBillingAvgOrderByAggregateInput = {
   billingDay?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
 }
 
 export type TenantBillingMaxOrderByAggregateInput = {
@@ -424,6 +474,8 @@ export type TenantBillingMaxOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   autoInvoice?: Prisma.SortOrder
   autoRemind?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -436,12 +488,16 @@ export type TenantBillingMinOrderByAggregateInput = {
   paymentMethod?: Prisma.SortOrder
   autoInvoice?: Prisma.SortOrder
   autoRemind?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TenantBillingSumOrderByAggregateInput = {
   billingDay?: Prisma.SortOrder
+  bookingFeePercent?: Prisma.SortOrder
+  saasFeePerVehicle?: Prisma.SortOrder
 }
 
 export type TenantBillingCreateNestedOneWithoutTenantInput = {
@@ -487,6 +543,8 @@ export type TenantBillingCreateWithoutTenantInput = {
   paymentMethod?: $Enums.PaymentMethod
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: number
+  saasFeePerVehicle?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -498,6 +556,8 @@ export type TenantBillingUncheckedCreateWithoutTenantInput = {
   paymentMethod?: $Enums.PaymentMethod
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: number
+  saasFeePerVehicle?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -525,6 +585,8 @@ export type TenantBillingUpdateWithoutTenantInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -536,6 +598,8 @@ export type TenantBillingUncheckedUpdateWithoutTenantInput = {
   paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   autoInvoice?: Prisma.BoolFieldUpdateOperationsInput | boolean
   autoRemind?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bookingFeePercent?: Prisma.IntFieldUpdateOperationsInput | number
+  saasFeePerVehicle?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -550,6 +614,8 @@ export type TenantBillingSelect<ExtArgs extends runtime.Types.Extensions.Interna
   paymentMethod?: boolean
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: boolean
+  saasFeePerVehicle?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -563,6 +629,8 @@ export type TenantBillingSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   paymentMethod?: boolean
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: boolean
+  saasFeePerVehicle?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -576,6 +644,8 @@ export type TenantBillingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   paymentMethod?: boolean
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: boolean
+  saasFeePerVehicle?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -589,11 +659,13 @@ export type TenantBillingSelectScalar = {
   paymentMethod?: boolean
   autoInvoice?: boolean
   autoRemind?: boolean
+  bookingFeePercent?: boolean
+  saasFeePerVehicle?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TenantBillingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "billingCycle" | "billingDay" | "paymentMethod" | "autoInvoice" | "autoRemind" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantBilling"]>
+export type TenantBillingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "billingCycle" | "billingDay" | "paymentMethod" | "autoInvoice" | "autoRemind" | "bookingFeePercent" | "saasFeePerVehicle" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantBilling"]>
 export type TenantBillingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
@@ -617,6 +689,8 @@ export type $TenantBillingPayload<ExtArgs extends runtime.Types.Extensions.Inter
     paymentMethod: $Enums.PaymentMethod
     autoInvoice: boolean
     autoRemind: boolean
+    bookingFeePercent: number
+    saasFeePerVehicle: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["tenantBilling"]>
@@ -1050,6 +1124,8 @@ export interface TenantBillingFieldRefs {
   readonly paymentMethod: Prisma.FieldRef<"TenantBilling", 'PaymentMethod'>
   readonly autoInvoice: Prisma.FieldRef<"TenantBilling", 'Boolean'>
   readonly autoRemind: Prisma.FieldRef<"TenantBilling", 'Boolean'>
+  readonly bookingFeePercent: Prisma.FieldRef<"TenantBilling", 'Int'>
+  readonly saasFeePerVehicle: Prisma.FieldRef<"TenantBilling", 'Int'>
   readonly createdAt: Prisma.FieldRef<"TenantBilling", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TenantBilling", 'DateTime'>
 }

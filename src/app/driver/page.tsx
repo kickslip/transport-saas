@@ -9,7 +9,7 @@ export default async function DriverDashboardPage() {
 
   const [user, completedToday, totalTrips, upcomingScheduled] = await Promise.all([
     userId
-      ? prisma.user.findUnique({ where: { id: userId }, select: { firstName: true, driverStatus: true } })
+      ? prisma.user.findUnique({ where: { id: userId }, select: { firstName: true, driverStatus: true, driverTier: true } })
       : null,
     userId
       ? prisma.trip.count({
@@ -39,10 +39,25 @@ export default async function DriverDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-wrap gap-3">
         <h1 className="text-xl font-bold text-gray-900 sm:text-3xl">
           Welcome back, {user?.firstName ?? 'Driver'} 👋
         </h1>
+        <div className="flex items-center gap-3">
+          {user?.driverTier === 'PREMIUM' && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">
+              ⭐ Premium
+            </span>
+          )}
+          {user?.driverTier !== 'PREMIUM' && (
+            <Link
+              href="/driver/premium"
+              className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 hover:bg-yellow-100"
+            >
+              ⭐ Upgrade to Premium
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Live Status Panel */}

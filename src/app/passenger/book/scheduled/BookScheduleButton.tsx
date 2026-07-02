@@ -103,7 +103,7 @@ export default function BookScheduleButton({
           <span>R{(basePrice * seats / 100).toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-500">
-          <span>Platform fee (7%)</span>
+          <span>Platform fee</span>
           <span>R{(fee * seats / 100).toFixed(2)}</span>
         </div>
         <div className="flex justify-between font-bold text-gray-900 border-t pt-1 mt-1">

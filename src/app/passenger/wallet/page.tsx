@@ -13,7 +13,7 @@ export default async function WalletPage() {
           take: 20,
         }).catch(() => []),
         prisma.payment.aggregate({
-          where: { userId: session.user.id, status: 'COMPLETED', method: 'EFT' },
+          where: { userId: session.user.id, status: 'COMPLETED', method: { in: ['EFT', 'WALLET'] } },
           _sum: { amount: true },
         }).catch(() => ({ _sum: { amount: 0 } })),
       ])

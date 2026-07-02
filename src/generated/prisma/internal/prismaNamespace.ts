@@ -1862,6 +1862,8 @@ export const TenantBillingScalarFieldEnum = {
   paymentMethod: 'paymentMethod',
   autoInvoice: 'autoInvoice',
   autoRemind: 'autoRemind',
+  bookingFeePercent: 'bookingFeePercent',
+  saasFeePerVehicle: 'saasFeePerVehicle',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

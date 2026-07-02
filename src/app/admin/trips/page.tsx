@@ -1,7 +1,11 @@
 import { prisma } from '@/lib/db'
 
 const statusColor: Record<string, string> = {
+  PENDING_DRIVER: 'bg-yellow-100 text-yellow-700',
   SCHEDULED: 'bg-blue-100 text-blue-700',
+  DRIVER_ASSIGNED: 'bg-indigo-100 text-indigo-700',
+  DRIVER_EN_ROUTE: 'bg-purple-100 text-purple-700',
+  DRIVER_ARRIVED: 'bg-purple-100 text-purple-700',
   IN_PROGRESS: 'bg-green-100 text-green-700',
   COMPLETED: 'bg-gray-100 text-gray-600',
   CANCELLED: 'bg-red-100 text-red-700',
@@ -36,6 +40,10 @@ export default async function AdminTripsPage({
       <form method="GET" className="flex flex-wrap gap-3">
         <select name="status" defaultValue={searchParams.status ?? ''} className="input flex-1 min-w-[9rem]">
           <option value="">All Statuses</option>
+          <option value="PENDING_DRIVER">Pending Driver</option>
+          <option value="DRIVER_ASSIGNED">Driver Assigned</option>
+          <option value="DRIVER_EN_ROUTE">En Route</option>
+          <option value="DRIVER_ARRIVED">Arrived</option>
           <option value="SCHEDULED">Scheduled</option>
           <option value="IN_PROGRESS">In Progress</option>
           <option value="COMPLETED">Completed</option>

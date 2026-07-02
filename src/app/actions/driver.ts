@@ -133,6 +133,52 @@ export async function getDriverStats(driverId: string) {
   }
 }
 
+export async function enRouteTrip(tripId: string) {
+  const session = await auth()
+  if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
+
+  try {
+    await prisma.trip.update({
+      where: { id: tripId, driverId: session.user.id },
+      data: { status: 'DRIVER_EN_ROUTE' },
+    })
+    await prisma.booking.updateMany({
+      where: { tripId, status: { in: ['PENDING', 'CONFIRMED', 'DRIVER_ASSIGNED'] } },
+      data: { status: 'DRIVER_EN_ROUTE' },
+    })
+    await auditLog({ action: 'DRIVER_EN_ROUTE', userId: session.user.id, entityId: tripId, entityType: 'Trip' })
+    revalidatePath('/driver/trips')
+    revalidatePath('/driver')
+    revalidatePath('/passenger/trips')
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Failed to update status' }
+  }
+}
+
+export async function arriveTrip(tripId: string) {
+  const session = await auth()
+  if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
+
+  try {
+    await prisma.trip.update({
+      where: { id: tripId, driverId: session.user.id },
+      data: { status: 'DRIVER_ARRIVED' },
+    })
+    await prisma.booking.updateMany({
+      where: { tripId, status: 'DRIVER_EN_ROUTE' },
+      data: { status: 'DRIVER_ARRIVED' },
+    })
+    await auditLog({ action: 'DRIVER_ARRIVED', userId: session.user.id, entityId: tripId, entityType: 'Trip' })
+    revalidatePath('/driver/trips')
+    revalidatePath('/driver')
+    revalidatePath('/passenger/trips')
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Failed to update status' }
+  }
+}
+
 export async function startTrip(tripId: string) {
   const session = await auth()
   if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
@@ -143,12 +189,13 @@ export async function startTrip(tripId: string) {
       data: { status: 'IN_PROGRESS', actualStartTime: new Date() },
     })
     await prisma.booking.updateMany({
-      where: { tripId, status: 'CONFIRMED' },
+      where: { tripId, status: { in: ['CONFIRMED', 'DRIVER_ASSIGNED', 'DRIVER_EN_ROUTE', 'DRIVER_ARRIVED'] } },
       data: { status: 'IN_PROGRESS' },
     })
     await auditLog({ action: 'TRIP_STARTED', userId: session.user.id, entityId: tripId, entityType: 'Trip' })
     revalidatePath('/driver/trips')
     revalidatePath('/driver')
+    revalidatePath('/passenger/trips')
     return { success: true }
   } catch {
     return { success: false, error: 'Failed to start trip' }
@@ -160,6 +207,11 @@ export async function completeTrip(tripId: string) {
   if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
 
   try {
+    const bookings = await prisma.booking.findMany({
+      where: { tripId },
+      include: { trip: { select: { tenantId: true } } },
+    })
+
     await prisma.trip.update({
       where: { id: tripId, driverId: session.user.id },
       data: { status: 'COMPLETED', actualEndTime: new Date() },
@@ -168,9 +220,33 @@ export async function completeTrip(tripId: string) {
       where: { tripId, status: 'IN_PROGRESS' },
       data: { status: 'COMPLETED' },
     })
+
+    // Auto-deduct wallet for completed bookings that have no payment yet
+    for (const booking of bookings) {
+      const existingPayment = await prisma.payment.findFirst({
+        where: { bookingId: booking.id, status: 'COMPLETED' },
+      })
+      if (!existingPayment && booking.trip?.tenantId) {
+        await prisma.payment.create({
+          data: {
+            tenantId: booking.trip.tenantId,
+            userId: booking.passengerId,
+            bookingId: booking.id,
+            tripId,
+            amount: -booking.totalPrice,
+            platformFee: booking.platformFee,
+            method: 'WALLET',
+            status: 'COMPLETED',
+            reference: `WALLET-${booking.id.slice(0, 8).toUpperCase()}-${Date.now()}`,
+          },
+        })
+      }
+    }
+
     await auditLog({ action: 'TRIP_COMPLETED', userId: session.user.id, entityId: tripId, entityType: 'Trip' })
     revalidatePath('/driver/trips')
     revalidatePath('/driver')
+    revalidatePath('/passenger/trips')
     return { success: true }
   } catch {
     return { success: false, error: 'Failed to complete trip' }
@@ -227,6 +303,29 @@ export async function collectCash(bookingId: string) {
     return { success: true }
   } catch (e: any) {
     return { success: false, error: e?.message ?? 'Failed to collect cash' }
+  }
+}
+
+export async function cancelTrip(tripId: string) {
+  const session = await auth()
+  if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
+
+  try {
+    await prisma.trip.update({
+      where: { id: tripId, driverId: session.user.id },
+      data: { status: 'CANCELLED' },
+    })
+    await prisma.booking.updateMany({
+      where: { tripId, status: { not: 'COMPLETED' } },
+      data: { status: 'CANCELLED_BY_DRIVER' },
+    })
+    await auditLog({ action: 'BOOKING_CANCELLED', userId: session.user.id, entityId: tripId, entityType: 'Trip' })
+    revalidatePath('/driver/trips')
+    revalidatePath('/driver')
+    revalidatePath('/passenger/trips')
+    return { success: true }
+  } catch {
+    return { success: false, error: 'Failed to cancel trip' }
   }
 }
 

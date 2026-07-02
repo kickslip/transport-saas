@@ -496,6 +496,10 @@ model TenantBilling {
   
   autoInvoice     Boolean  @default(true)
   autoRemind      Boolean  @default(true)
+
+  // Fees
+  bookingFeePercent  Int      @default(7) // passenger platform fee percent
+  saasFeePerVehicle  Int      @default(20000) // in cents per vehicle per month
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

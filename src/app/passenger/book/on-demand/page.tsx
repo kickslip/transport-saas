@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSocket } from '@/hooks/useSocket'
 import { useSession } from 'next-auth/react'
 import { createOnDemandRequest } from '@/app/actions/trips'
+import { getTenantBookingFeePercent } from '@/app/actions/tenantFees'
 
 export default function OnDemandBookingPage() {
   const router = useRouter()
@@ -19,6 +20,14 @@ export default function OnDemandBookingPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [bookingFeePercent, setBookingFeePercent] = useState(7)
+
+  useEffect(() => {
+    const tenantId = session?.user?.tenantId
+    if (tenantId) {
+      getTenantBookingFeePercent(tenantId).then(setBookingFeePercent)
+    }
+  }, [session?.user?.tenantId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,7 +43,7 @@ export default function OnDemandBookingPage() {
       }
 
       const estimatedPrice = 5000 // R50 stub — real pricing from server action
-      const platformFee = Math.round(estimatedPrice * 0.07)
+      const platformFee = Math.round(estimatedPrice * (bookingFeePercent / 100))
       const result = await createOnDemandRequest({
         tenantId,
         passengerId,
@@ -156,15 +165,15 @@ export default function OnDemandBookingPage() {
           <div className="rounded-lg bg-blue-50 border border-blue-200 p-4">
             <div className="flex justify-between text-sm text-gray-600 mb-1">
               <span>Base fare estimate</span>
-              <span>R35 – R80</span>
+              <span>R50.00</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Platform fee (7%)</span>
-              <span>R2.45 – R5.60</span>
+              <span>Platform fee ({bookingFeePercent}%)</span>
+              <span>R{((5000 * (bookingFeePercent / 100)) / 100).toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-semibold text-gray-900 pt-2 border-t border-blue-200">
               <span>Estimated Total</span>
-              <span>R37 – R86</span>
+              <span>R{((5000 + 5000 * (bookingFeePercent / 100)) / 100).toFixed(2)}</span>
             </div>
             <p className="text-xs text-gray-500 mt-2">Final price confirmed after driver match</p>
           </div>

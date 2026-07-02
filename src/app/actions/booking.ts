@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/db'
 import { auth } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
+import { getTenantBookingFeePercent } from './tenantFees'
 
 export async function getUpcomingTrips() {
   const session = await auth()
@@ -80,7 +81,8 @@ export async function bookScheduledTrip(scheduleId: string, seatsBooked = 1) {
     if (!schedule) return { success: false, error: 'Schedule not found' }
     if (!schedule.driverId) return { success: false, error: 'No driver assigned to this route yet' }
 
-    const platformFee = Math.round(schedule.basePrice * 0.07)
+    const bookingFeePercent = await getTenantBookingFeePercent(schedule.tenantId)
+    const platformFee = Math.round(schedule.basePrice * (bookingFeePercent / 100))
 
     // Find or create today's trip for this schedule
     const today = new Date()
@@ -148,12 +150,31 @@ export async function cancelBooking(bookingId: string) {
   if (!session?.user?.id) return { success: false, error: 'Not authenticated' }
 
   try {
-    await prisma.booking.update({
+    const booking = await prisma.booking.findUnique({
       where: { id: bookingId, passengerId: session.user.id },
+    })
+    if (!booking) return { success: false, error: 'Booking not found' }
+
+    await prisma.booking.update({
+      where: { id: bookingId },
       data: { status: 'CANCELLED_BY_PASSENGER' },
     })
+
+    // If this was the only active booking on the trip, cancel the trip too
+    const remaining = await prisma.booking.count({
+      where: { tripId: booking.tripId, status: { notIn: ['COMPLETED', 'CANCELLED_BY_PASSENGER', 'CANCELLED_BY_DRIVER', 'NO_SHOW'] } },
+    })
+    if (remaining === 0) {
+      await prisma.trip.update({
+        where: { id: booking.tripId },
+        data: { status: 'CANCELLED' },
+      })
+    }
+
     revalidatePath('/passenger/trips')
     revalidatePath('/passenger')
+    revalidatePath('/driver/trips')
+    revalidatePath('/admin/trips')
     return { success: true }
   } catch {
     return { success: false, error: 'Failed to cancel booking' }

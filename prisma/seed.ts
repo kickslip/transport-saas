@@ -63,7 +63,7 @@ async function main() {
   const tenants: any[] = []
   for (const td of tenantRows) {
     const t = await prisma.tenant.upsert({ where: { slug: td.slug }, update: {}, create: td })
-    await prisma.tenantBilling.upsert({ where: { tenantId: t.id }, update: {}, create: { tenantId: t.id, billingCycle: 'MONTHLY', billingDay: 1, autoInvoice: true } })
+    await prisma.tenantBilling.upsert({ where: { tenantId: t.id }, update: {}, create: { tenantId: t.id, billingCycle: 'MONTHLY', billingDay: 1, autoInvoice: true, bookingFeePercent: 7, saasFeePerVehicle: td.saasFeePerVehicle } })
     tenants.push(t)
     console.log(`  ✔ Tenant: ${t.name}`)
   }
@@ -101,7 +101,7 @@ async function main() {
   for (const d of driverRows) {
     const u = await prisma.user.upsert({
       where: { email: d.email }, update: {},
-      create: { email: d.email, firstName: d.firstName, lastName: d.lastName, phoneNumber: d.phone, passwordHash: driverPw, role: UserRole.DRIVER, tenantId: d.tenantId, driverStatus: DriverStatus.ONLINE, driverTier: d.tier, driverRating: d.rating, driverReviewCount: d.reviews, driverLicenseNumber: `DL${rand(100000, 999999)}`, isActive: true, walletBalance: d.wallet, currentLocationLat: d.lat, currentLocationLng: d.lng, lastLocationUpdate: new Date() },
+      create: { email: d.email, firstName: d.firstName, lastName: d.lastName, phoneNumber: d.phone, passwordHash: driverPw, role: UserRole.DRIVER, tenantId: d.tenantId, driverStatus: DriverStatus.ONLINE, driverTier: d.tier, driverRating: d.rating, driverReviewCount: d.reviews, driverLicenseNumber: `DL${rand(100000, 999999)}`, driverLicenseExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), isActive: true, walletBalance: d.wallet, currentLocationLat: d.lat, currentLocationLng: d.lng, lastLocationUpdate: new Date() },
     })
     companyDrivers.push(u)
   }
@@ -118,7 +118,7 @@ async function main() {
   for (const d of indieRows) {
     const u = await prisma.user.upsert({
       where: { email: d.email }, update: {},
-      create: { email: d.email, firstName: d.firstName, lastName: d.lastName, phoneNumber: d.phone, passwordHash: driverPw, role: UserRole.DRIVER, tenantId: null, driverStatus: DriverStatus.ONLINE, driverTier: d.tier, driverRating: d.rating, driverReviewCount: d.reviews, driverLicenseNumber: `DL${rand(100000, 999999)}`, isActive: true, walletBalance: d.wallet, currentLocationLat: d.lat, currentLocationLng: d.lng, lastLocationUpdate: new Date() },
+      create: { email: d.email, firstName: d.firstName, lastName: d.lastName, phoneNumber: d.phone, passwordHash: driverPw, role: UserRole.DRIVER, tenantId: null, driverStatus: DriverStatus.ONLINE, driverTier: d.tier, driverRating: d.rating, driverReviewCount: d.reviews, driverLicenseNumber: `DL${rand(100000, 999999)}`, driverLicenseExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), isActive: true, walletBalance: d.wallet, currentLocationLat: d.lat, currentLocationLng: d.lng, lastLocationUpdate: new Date() },
     })
     indieDrivers.push(u)
   }

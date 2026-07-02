@@ -12,6 +12,7 @@ function statusBadge(status: string) {
     CONFIRMED: 'bg-blue-100 text-blue-800',
     DRIVER_ASSIGNED: 'bg-indigo-100 text-indigo-800',
     DRIVER_EN_ROUTE: 'bg-purple-100 text-purple-800',
+    DRIVER_ARRIVED: 'bg-purple-100 text-purple-800',
     IN_PROGRESS: 'bg-green-100 text-green-800',
     COMPLETED: 'bg-gray-100 text-gray-700',
     CANCELLED_BY_PASSENGER: 'bg-red-100 text-red-700',
@@ -75,7 +76,7 @@ export default async function MyTripsPage() {
                     <Link href={`/passenger/trips/${booking.id}`} className="text-xs text-primary-600 hover:underline block mt-1">
                       View →
                     </Link>
-                    <CancelBookingButton bookingId={booking.id} />
+                    <CancelBookingButton bookingId={booking.id} status={booking.status} />
                   </div>
                 </div>
               </div>

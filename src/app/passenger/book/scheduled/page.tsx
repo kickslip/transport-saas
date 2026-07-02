@@ -1,4 +1,5 @@
 import { getAvailableSchedules } from '@/app/actions/booking'
+import { getTenantBookingFeePercent } from '@/app/actions/tenantFees'
 import BookScheduleButton from './BookScheduleButton'
 import ScheduleFilters from './ScheduleFilters'
 import Link from 'next/link'
@@ -21,6 +22,14 @@ export default async function ScheduledRoutesPage({
     search: searchParams.q,
     day: searchParams.day ? parseInt(searchParams.day) : undefined,
   })
+
+  const fees = new Map<string, number>()
+  for (const schedule of schedules) {
+    if (!fees.has(schedule.tenantId)) {
+      const percent = await getTenantBookingFeePercent(schedule.tenantId)
+      fees.set(schedule.tenantId, Math.round(schedule.basePrice * (percent / 100)))
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 pb-24">
@@ -109,7 +118,11 @@ export default async function ScheduledRoutesPage({
                         Waiting for driver assignment
                       </div>
                     ) : (
-                      <BookScheduleButton scheduleId={schedule.id} basePrice={schedule.basePrice} />
+                      <BookScheduleButton
+                        scheduleId={schedule.id}
+                        basePrice={schedule.basePrice}
+                        platformFee={fees.get(schedule.tenantId)}
+                      />
                     )}
                   </div>
                 </div>

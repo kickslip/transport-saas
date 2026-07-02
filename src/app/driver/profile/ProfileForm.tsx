@@ -11,6 +11,7 @@ type User = {
   phoneNumber: string | null
   avatarUrl: string | null
   driverStatus: string | null
+  driverTier: string | null
   createdAt: Date
 }
 
@@ -44,6 +45,12 @@ export default function DriverProfileForm({ user }: { user: User }) {
           <div className="flex items-center gap-2 mt-1">
             <span className={`inline-block w-2 h-2 rounded-full ${user.driverStatus === 'ONLINE' ? 'bg-green-500' : 'bg-gray-400'}`} />
             <span className="text-xs text-gray-500">{user.driverStatus ?? 'OFFLINE'}</span>
+            {user.driverTier === 'PREMIUM' && (
+              <span className="text-xs font-bold text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">⭐ Premium</span>
+            )}
+            {user.driverTier === 'VERIFIED' && (
+              <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Verified</span>
+            )}
           </div>
           <p className="text-xs text-gray-400 mt-0.5">
             Driver since {new Date(user.createdAt).toLocaleDateString()}

@@ -6,7 +6,11 @@ import CashCollectButton from './CashCollectButton'
 
 function statusBadge(status: string) {
   const map: Record<string, string> = {
+    PENDING_DRIVER: 'bg-yellow-100 text-yellow-800',
     SCHEDULED: 'bg-blue-100 text-blue-800',
+    DRIVER_ASSIGNED: 'bg-indigo-100 text-indigo-800',
+    DRIVER_EN_ROUTE: 'bg-purple-100 text-purple-800',
+    DRIVER_ARRIVED: 'bg-purple-100 text-purple-800',
     IN_PROGRESS: 'bg-green-100 text-green-800',
     COMPLETED: 'bg-gray-100 text-gray-700',
     CANCELLED: 'bg-red-100 text-red-700',
